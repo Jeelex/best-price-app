@@ -9,14 +9,9 @@ function App() {
 	return (
 		<Routes>
 			<Route path="/" element={<HomePage />} />
-			<Route path="/categories/583" element={<ProductsList />} />
-			<Route path="/" element={<Product />} />
+			<Route path="categories/:id" element={<ProductsList />} />
+			<Route path="products/:id" element={<Product />} />
 		</Routes>
-		// <div>
-		// 	<HomePage />
-		// 	{/* <ProductsList /> */}
-		// 	{/* <Product /> */}
-		// </div>
 	);
 }
 

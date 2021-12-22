@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-// import { getProductsList } from "../utilityFunctions/utilityfunctions";
 import ProductsListItem from "./ProductsListItem";
-
+import { useLocation } from "react-router-dom";
 
 function ProductsList() {
 	const [productsList, setProductsList] = useState([]);
 
-	async function getProductsList(categoryId) {
-		const API = `http://bp-interview.herokuapp.com/categories/${categoryId}/products`;
+	const location = useLocation();
+	const { from } = location.state;
+
+	async function getProductsList() {
+		// console.log("category", from);
+		const API = `http://bp-interview.herokuapp.com/categories/${from}/products`;
+		// how to add pagination later:
 		// const API = `http://bp-interview.herokuapp.com/categories/${categoryId}/products?page=1&limit=2`;
 
 		try {
@@ -23,20 +27,16 @@ function ProductsList() {
 	}
 
 	useEffect(() => {
-		getProductsList(583);
+		getProductsList();
 	}, []);
-
-	function test() {
-		console.log("item clicked");
-	}
 
 	return (
 		<div>
-			 <nav>
+			<nav>
 				<Link to="/">Home</Link>
-      </nav>
+			</nav>
 			<h2>A listing page, which will have a list of products.</h2>
-			<div onClick={test}>
+			<div>
 				{productsList.map((product) => (
 					<ProductsListItem key={product.id} item={product} />
 				))}
