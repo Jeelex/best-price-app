@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 // import { getProductsList } from "../utilityFunctions/utilityfunctions";
 import ProductsListItem from "./ProductsListItem";
+
 
 function ProductsList() {
 	const [productsList, setProductsList] = useState([]);
 
 	async function getProductsList(categoryId) {
 		const API = `http://bp-interview.herokuapp.com/categories/${categoryId}/products`;
+		// const API = `http://bp-interview.herokuapp.com/categories/${categoryId}/products?page=1&limit=2`;
 
 		try {
 			const response = await fetch(API);
 			const data = await response.json();
-			console.log(data);
+			// console.log(data);
 			setProductsList(data);
 		} catch (error) {
 			console.log(error);
@@ -29,6 +32,9 @@ function ProductsList() {
 
 	return (
 		<div>
+			 <nav>
+				<Link to="/">Home</Link>
+      </nav>
 			<h2>A listing page, which will have a list of products.</h2>
 			<div onClick={test}>
 				{productsList.map((product) => (

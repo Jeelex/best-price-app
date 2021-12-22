@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import {
-	getCategories,
-	getProductsList,
-} from "../utilityFunctions/utilityfunctions";
+// import {
+// 	getCategories,
+// 	getProductsList,
+// } from "../utilityFunctions/utilityfunctions";
 import Item from "./Item";
 
 function HomePage() {
@@ -36,6 +36,7 @@ function HomePage() {
 	return (
 		<div>
 			<h2>Home</h2>
+
 			{categories.map((category) => (
 				<Item key={category.id} item={category} />
 			))}

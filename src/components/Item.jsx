@@ -1,19 +1,16 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Item({ item }) {
-	function test() {
-		console.log("title clicked");
-	}
-
 	return (
 		<div>
 			<img src={item.image_url} alt={`${item.title} thumbnail`} />
 			<div>
-				<a href="#" onClick={test}>
+				<Link to={`/categories/${item.id}/`}>
+					{/* <a href="ttp://bp-interview.herokuapp.com/categories/583/" onClick={test}> */}
 					{item.title}
-				</a>
+				</Link>
 			</div>
-			<a href="#">{item.slug}</a>
 			<hr />
 		</div>
 	);
