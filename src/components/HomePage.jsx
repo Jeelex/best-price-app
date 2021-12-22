@@ -1,8 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import {
-// 	getCategories,
-// 	getProductsList,
-// } from "../utilityFunctions/utilityfunctions";
 import Item from "./Item";
 
 function HomePage() {
@@ -14,17 +10,13 @@ function HomePage() {
 		try {
 			const response = await fetch(API);
 			const data = await response.json();
-			console.log(data);
+			// console.log(data);
 			setCategories(data);
-			// return data;
 		} catch (error) {
 			console.log(error);
 			// setErrorMessage("Something went wrong. Please try again!");
 		}
 	}
-
-	// console.log(getCategories());
-	// setCategories(data);
 
 	useEffect(() => {
 		getCategories();
@@ -36,7 +28,6 @@ function HomePage() {
 	return (
 		<div>
 			<h2>Home</h2>
-
 			{categories.map((category) => (
 				<Item key={category.id} item={category} />
 			))}
