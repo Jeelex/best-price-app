@@ -14,7 +14,7 @@ function HomePage() {
 		try {
 			const response = await fetch(API);
 			const data = await response.json();
-			// console.log(data);
+			console.log(data);
 			setCategories(data);
 			// return data;
 		} catch (error) {
@@ -35,8 +35,9 @@ function HomePage() {
 
 	return (
 		<div>
+			<h2>Home</h2>
 			{categories.map((category) => (
-				<Item key={category.id} category={category} />
+				<Item key={category.id} item={category} />
 			))}
 		</div>
 	);

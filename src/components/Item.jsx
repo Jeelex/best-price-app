@@ -8,10 +8,11 @@ function Item({ item }) {
 	return (
 		<div>
 			<img src={item.image_url} alt={`${item.title} thumbnail`} />
-			<a href="#" onClick={test}>
-				{item.title}
-			</a>
-			<hr />
+			<div>
+				<a href="#" onClick={test}>
+					{item.title}
+				</a>
+			</div>
 			<a href="#">{item.slug}</a>
 			<hr />
 		</div>
