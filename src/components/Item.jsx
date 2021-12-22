@@ -1,6 +1,6 @@
 import React from "react";
 
-function Item({ category: item }) {
+function Item({ item }) {
 	function test() {
 		console.log("test");
 	}

@@ -16,7 +16,7 @@ function HomePage() {
 			const data = await response.json();
 			// console.log(data);
 			setCategories(data);
-			return data;
+			// return data;
 		} catch (error) {
 			console.log(error);
 			// setErrorMessage("Something went wrong. Please try again!");
