@@ -2,17 +2,16 @@ import React from "react";
 
 function Item({ item }) {
 	function test() {
-		console.log("test");
+		console.log("title clicked");
 	}
 
 	return (
 		<div>
 			<img src={item.image_url} alt={`${item.title} thumbnail`} />
-			<div>
-				<a href="#" onClick={test}>
-					{item.title}
-				</a>
-			</div>
+			<a href="#" onClick={test}>
+				{item.title}
+			</a>
+			<hr />
 			<a href="#">{item.slug}</a>
 			<hr />
 		</div>
