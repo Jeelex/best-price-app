@@ -5,13 +5,13 @@ import { useLocation } from "react-router-dom";
 
 function ProductsList() {
 	const [productsList, setProductsList] = useState([]);
-
-	const location = useLocation();
-	const { from } = location.state;
 	const [pageNo, setPageNo] = useState(1);
 	const [totalNumberOfProducts, setTotalNumberOfProducts] = useState(0);
-
+	const location = useLocation();
+	const { from } = location.state;
+	
 	async function getProductsList() {
+		const maxProductsPerPage = 15;
 		// console.log("category", from);
 		const API = `http://bp-interview.herokuapp.com/categories/${from}/products`;
 		// how to add pagination later:
@@ -21,9 +21,10 @@ function ProductsList() {
 		try {
 			const firstResponse = await fetch(API);
 			const allData = await firstResponse.json();
-			setTotalNumberOfProducts(allData.length)
-			const response = await fetch(API + `?page=${pageNo}&limit=15`);
+			setTotalNumberOfProducts(allData.length);
+			const response = await fetch(API + `?page=${pageNo}&limit=${maxProductsPerPage}`);
 			const data = await response.json();
+			console.log(data)
 			setProductsList(data);
 		} catch (error) {
 			console.log(error);
@@ -43,8 +44,9 @@ function ProductsList() {
 		// console.log("after Prev", pageNo);
 	}
 	function renderNextPage() {
-		console.log("before Next", pageNo);
-		if (pageNo < totalNumberOfProducts) {
+		const maxPageNumber = Math.ceil(totalNumberOfProducts / 15);
+		console.log(maxPageNumber)
+		if (pageNo < maxPageNumber) {
 			setPageNo(pageNo + 1);
 		}
 	}
@@ -71,10 +73,10 @@ function ProductsList() {
 				{/* {from.price} */}
 				{productsList.map((product) => (
 					<ProductsListItem key={product.id} item={product} />
-					))}
+				))}
 			</div>
-					<button onClick={renderPreviousPage}>previous</button>
-					<button onClick={renderNextPage}>next</button>
+			<button onClick={renderPreviousPage}>previous</button>
+			<button onClick={renderNextPage}>next</button>
 		</div>
 	);
 }
