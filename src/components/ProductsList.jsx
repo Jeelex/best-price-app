@@ -7,7 +7,7 @@ function ProductsList() {
 	const location = useLocation();
 	const { from } = location.state;
 	const [productsList, setProductsList] = useState([]);
-	const [pageNo, setPageNo] = useState(1);
+	const [currentPageNo, setCurrentPageNo] = useState(1);
 	const [totalNumberOfProducts, setTotalNumberOfProducts] = useState(0);
 	const maxProductsPerPage = 15;
 	const maxPageNumber = Math.ceil(totalNumberOfProducts / maxProductsPerPage);
@@ -16,7 +16,8 @@ function ProductsList() {
 	const [islowToHigh, setIsLowToHigh] = useState(false);
 
 	const API = `http://bp-interview.herokuapp.com/categories/${from}/products`;
-	let specificPageAPI = API + `?page=${pageNo}&limit=${maxProductsPerPage}`;
+	let specificPageAPI =
+		API + `?page=${currentPageNo}&limit=${maxProductsPerPage}`;
 
 	async function getProductsList() {
 		// how to add pagination later:
@@ -42,28 +43,26 @@ function ProductsList() {
 
 	useEffect(() => {
 		getProductsList();
-	}, [pageNo]);
+	}, [currentPageNo]);
 
 	function renderPreviousPage() {
-		if (pageNo >= 2) {
-			setPageNo(pageNo - 1);
+		if (currentPageNo >= 2) {
+			setCurrentPageNo(currentPageNo - 1);
 		}
-		console.log("pageNo", pageNo);
+		console.log("pageNo", currentPageNo);
 	}
 	function renderNextPage() {
-		if (pageNo < maxPageNumber) {
-			setPageNo(pageNo + 1);
+		if (currentPageNo < maxPageNumber) {
+			setCurrentPageNo(currentPageNo + 1);
 		}
-		console.log("pageNo", pageNo);
+		console.log("pageNo", currentPageNo);
 	}
 
 	function sortByPrice() {
 		if (islowToHigh) {
-			// originalData.sort((a, b) => b.price - a.price);
-			setPageNo(1)
+			setCurrentPageNo(1);
 		} else {
-			// originalData.sort((a, b) => a.price - b.price);
-			setPageNo(maxPageNumber)
+			setCurrentPageNo(maxPageNumber);
 		}
 		setIsLowToHigh(!islowToHigh);
 		// console.log("originalData SORTED", originalData);
@@ -77,26 +76,29 @@ function ProductsList() {
 			</nav>
 			<h2>A listing page, which will have a list of products.</h2>
 			<div>
-				<input
-					type="range"
-					name="price-range"
-					id="price-range"
-					min="0"
-					max="5000"
-				/>
+				<div>
+					<label htmlFor="price-range">Price Range</label>
+					<input
+						type="range"
+						name="price-range"
+						id="price-range"
+						min="0"
+						max="5000"
+					/>
+				</div>
 				<button onClick={sortByPrice}>{`Sort by ${
 					islowToHigh ? "Low" : "High"
 				} Price`}</button>
 			</div>
 
 			<button
-				style={{ opacity: pageNo >= 2 ? 1 : 0.5 }}
+				style={{ opacity: currentPageNo >= 2 ? 1 : 0.5 }}
 				onClick={renderPreviousPage}
 			>
 				previous
 			</button>
 			<button
-				style={{ opacity: pageNo < maxPageNumber ? 1 : 0.5 }}
+				style={{ opacity: currentPageNo < maxPageNumber ? 1 : 0.5 }}
 				onClick={renderNextPage}
 			>
 				next
@@ -109,13 +111,13 @@ function ProductsList() {
 					))}
 			</div>
 			<button
-				style={{ opacity: pageNo >= 2 ? 1 : 0.5 }}
+				style={{ opacity: currentPageNo >= 2 ? 1 : 0.5 }}
 				onClick={renderPreviousPage}
 			>
 				previous
 			</button>
 			<button
-				style={{ opacity: pageNo < maxPageNumber ? 1 : 0.5 }}
+				style={{ opacity: currentPageNo < maxPageNumber ? 1 : 0.5 }}
 				onClick={renderNextPage}
 			>
 				next
