@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import ProductsListItem from "./ProductsListItem";
 import { useLocation } from "react-router-dom";
 
-
 function ProductsList() {
 	const location = useLocation();
 	const { from } = location.state;
@@ -13,7 +12,8 @@ function ProductsList() {
 	const maxProductsPerPage = 15;
 	const maxPageNumber = Math.ceil(totalNumberOfProducts / maxProductsPerPage);
 
-	
+	const [originalData, setOriginalData] = useState([]);
+	const [islowToHigh, setIsLowToHigh] = useState(false);
 
 	const API = `http://bp-interview.herokuapp.com/categories/${from}/products`;
 	let specificPageAPI = API + `?page=${pageNo}&limit=${maxProductsPerPage}`;
@@ -27,15 +27,17 @@ function ProductsList() {
 			const firstResponse = await fetch(API);
 			const allData = await firstResponse.json();
 			setTotalNumberOfProducts(allData.length);
+			setOriginalData(allData);
 
 			const response = await fetch(specificPageAPI);
 			const data = await response.json();
-			console.log(data);
+			// console.log(data);
 			setProductsList(data);
 		} catch (error) {
 			console.log(error);
 			// setErrorMessage("Something went wrong. Please try again!");
 		}
+		console.log("data initial", originalData);
 	}
 
 	useEffect(() => {
@@ -55,6 +57,19 @@ function ProductsList() {
 		console.log("pageNo", pageNo);
 	}
 
+	function sortByPrice() {
+		if (islowToHigh) {
+			// originalData.sort((a, b) => b.price - a.price);
+			setPageNo(1)
+		} else {
+			// originalData.sort((a, b) => a.price - b.price);
+			setPageNo(maxPageNumber)
+		}
+		setIsLowToHigh(!islowToHigh);
+		// console.log("originalData SORTED", originalData);
+	}
+	// console.log("islowToHigh", islowToHigh)
+
 	return (
 		<div>
 			<nav>
@@ -69,7 +84,11 @@ function ProductsList() {
 					min="0"
 					max="5000"
 				/>
+				<button onClick={sortByPrice}>{`Sort by ${
+					islowToHigh ? "Low" : "High"
+				} Price`}</button>
 			</div>
+
 			<button
 				style={{ opacity: pageNo >= 2 ? 1 : 0.5 }}
 				onClick={renderPreviousPage}
@@ -83,10 +102,11 @@ function ProductsList() {
 				next
 			</button>
 			<div>
-				{/* {from.price} */}
-				{productsList.map((product) => (
-					<ProductsListItem key={product.id} item={product} />
-				))}
+				{productsList
+					.sort((a, b) => (islowToHigh ? b.price - a.price : a.price - b.price))
+					.map((product) => (
+						<ProductsListItem key={product.id} item={product} />
+					))}
 			</div>
 			<button
 				style={{ opacity: pageNo >= 2 ? 1 : 0.5 }}
