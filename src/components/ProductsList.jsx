@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ProductsListItem from "./ProductsListItem";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams, useNavigate } from "react-router-dom";
 
 function ProductsList() {
 	const location = useLocation();
+	console.log(location)
+	// const { pathname } = location;
+	// console.log(pathname)
 	const { from } = location.state;
 	const [productsList, setProductsList] = useState([]);
 	const [pageNo, setPageNo] = useState(1);
 	const [totalNumberOfProducts, setTotalNumberOfProducts] = useState(0);
 	const maxProductsPerPage = 15;
 	const maxPageNumber = Math.ceil(totalNumberOfProducts / maxProductsPerPage);
+
+	let [searchParams, setSearchParams] = useSearchParams();
+	let navigate = useNavigate();
+	
 
 	async function getProductsList() {
 		// console.log("category", from);
@@ -42,6 +49,12 @@ function ProductsList() {
 	function renderPreviousPage() {
 		if (pageNo >= 2) {
 			setPageNo(pageNo - 1);
+			// navigate(-1)
+			// navigate("?page=1&limit=10")
+			// navigate("hello")
+			// let params = "hello there";
+			// let params = "?page=1&limit=10";
+			// setSearchParams(params);
 		}
 	}
 	function renderNextPage() {

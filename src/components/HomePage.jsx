@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Item from "./Item";
+import { Link } from "react-router-dom";
+// import Item from "./Item";
 
 function HomePage() {
 	const [categories, setCategories] = useState([]);
@@ -29,7 +30,16 @@ function HomePage() {
 		<div>
 			<h2>Home</h2>
 			{categories.map((category) => (
-				<Item key={category.id} item={category} />
+				<div key={category.id}>
+					<Link
+						to={`/categories/${category.id}?page=1&limit=2`}
+						state={{ from: category.id }}
+					>
+						<img src={category.image_url} alt={`${category.title} thumbnail`} />
+						<h3>{category.title}</h3>
+					</Link>
+					<hr />
+				</div>
 			))}
 		</div>
 	);
