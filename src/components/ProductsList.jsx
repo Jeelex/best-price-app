@@ -4,14 +4,15 @@ import ProductsListItem from "./ProductsListItem";
 import { useLocation } from "react-router-dom";
 
 function ProductsList() {
+	const location = useLocation();
+	const { from } = location.state;
 	const [productsList, setProductsList] = useState([]);
 	const [pageNo, setPageNo] = useState(1);
 	const [totalNumberOfProducts, setTotalNumberOfProducts] = useState(0);
-	const location = useLocation();
-	const { from } = location.state;
-	
+	const maxProductsPerPage = 15;
+	const maxPageNumber = Math.ceil(totalNumberOfProducts / maxProductsPerPage);
+
 	async function getProductsList() {
-		const maxProductsPerPage = 15;
 		// console.log("category", from);
 		const API = `http://bp-interview.herokuapp.com/categories/${from}/products`;
 		// how to add pagination later:
@@ -22,9 +23,11 @@ function ProductsList() {
 			const firstResponse = await fetch(API);
 			const allData = await firstResponse.json();
 			setTotalNumberOfProducts(allData.length);
-			const response = await fetch(API + `?page=${pageNo}&limit=${maxProductsPerPage}`);
+			const response = await fetch(
+				API + `?page=${pageNo}&limit=${maxProductsPerPage}`
+			);
 			const data = await response.json();
-			console.log(data)
+			console.log(data);
 			setProductsList(data);
 		} catch (error) {
 			console.log(error);
@@ -37,15 +40,11 @@ function ProductsList() {
 	}, [pageNo]);
 
 	function renderPreviousPage() {
-		console.log("before Prev", pageNo);
 		if (pageNo >= 2) {
 			setPageNo(pageNo - 1);
 		}
-		// console.log("after Prev", pageNo);
 	}
 	function renderNextPage() {
-		const maxPageNumber = Math.ceil(totalNumberOfProducts / 15);
-		console.log(maxPageNumber)
 		if (pageNo < maxPageNumber) {
 			setPageNo(pageNo + 1);
 		}
@@ -67,16 +66,36 @@ function ProductsList() {
 					max="5000"
 				/>
 			</div>
-			<button onClick={renderPreviousPage}>previous</button>
-			<button onClick={renderNextPage}>next</button>
+			<button
+				style={{ opacity: pageNo >= 2 ? 1 : 0.5 }}
+				onClick={renderPreviousPage}
+			>
+				previous
+			</button>
+			<button
+				style={{ opacity: pageNo < maxPageNumber ? 1 : 0.5 }}
+				onClick={renderNextPage}
+			>
+				next
+			</button>
 			<div>
 				{/* {from.price} */}
 				{productsList.map((product) => (
 					<ProductsListItem key={product.id} item={product} />
 				))}
 			</div>
-			<button onClick={renderPreviousPage}>previous</button>
-			<button onClick={renderNextPage}>next</button>
+			<button
+				style={{ opacity: pageNo >= 2 ? 1 : 0.5 }}
+				onClick={renderPreviousPage}
+			>
+				previous
+			</button>
+			<button
+				style={{ opacity: pageNo < maxPageNumber ? 1 : 0.5 }}
+				onClick={renderNextPage}
+			>
+				next
+			</button>
 		</div>
 	);
 }
