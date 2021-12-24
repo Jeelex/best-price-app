@@ -20,10 +20,10 @@ function ProductsList() {
 	const [totalNumberOfProducts, setTotalNumberOfProducts] = useState(0);
 	const maxProductsPerPage = 15;
 	const maxPageNumber = Math.ceil(totalNumberOfProducts / maxProductsPerPage);
-	const [originalPriceRange, setOriginalPriceRange] = useState([0, 10000]);
-	const [priceRange, setPriceRange] = useState([0, 10000]);
+	const [priceRange, setPriceRange] = useState([0, 2800]);
+	// const [userPriceRange, setUserPriceRange] = useState([0, 2800]);
+	// const [originalData, setOriginalData] = useState([]);
 
-	const [originalData, setOriginalData] = useState([]);
 	const [islowToHigh, setIsLowToHigh] = useState(false);
 
 	const API = `http://bp-interview.herokuapp.com/categories/${from}/products`;
@@ -39,17 +39,13 @@ function ProductsList() {
 			const firstResponse = await fetch(API);
 			const allData = await firstResponse.json();
 			setTotalNumberOfProducts(allData.length);
-			setOriginalData(allData);
-			// console.log(originalData[0])
-			const productsMinPrice = originalData[0].price;
-			const productsMaxPrice = originalData[originalData.length-1].price;
-			
-			
-			console.log("productsMinPrice", productsMinPrice);
-			console.log("productsMaxPrice", productsMaxPrice);
-			setOriginalPriceRange(addFloatingPoint(productsMinPrice), addFloatingPoint(productsMaxPrice))
-			setPriceRange(addFloatingPoint(productsMinPrice), addFloatingPoint(productsMaxPrice))
-			// setPriceRange(originalData[0].price, originalData[originalData.length-1].price)
+			// setOriginalData(allData);
+			// console.log(allData)
+			// const productsMinPrice = allData[0].price;
+			// const productsMaxPrice = allData[allData.length - 1].price;
+			// console.log("productsMinPrice", productsMinPrice)
+			// console.log("productsMaxPrice", productsMaxPrice)
+			// setUserPriceRange(productsMaxPrice);
 
 			const response = await fetch(specificPageAPI);
 			const data = await response.json();
@@ -61,10 +57,15 @@ function ProductsList() {
 		}
 		// console.log("data initial", originalData);
 	}
+	// console.log("priceRange", priceRange);
 
 	useEffect(() => {
 		getProductsList();
 	}, [currentPageNo]);
+
+	// useEffect(() => {
+	// 	setUserPriceRange();
+	// }, [userPriceRange]);
 
 	function renderPreviousPage() {
 		if (currentPageNo >= 2) {
@@ -92,8 +93,6 @@ function ProductsList() {
 	function priceSelection(priceRange) {
 		setPriceRange(priceRange);
 	}
-	// console.log("originalPriceRange INITIAL", originalPriceRange);
-	// console.log("priceRange INITIAL", priceRange);
 
 	return (
 		<div>
@@ -107,10 +106,10 @@ function ProductsList() {
 						name="price range"
 						aria-label={["min", "max"]}
 						colorScheme="pink"
-						min={originalPriceRange[0]}
-						max={originalPriceRange[1]}
-						// defaultValue={[10, 80]}
-						minStepsBetweenThumbs={5}
+						min={0}
+						max={2800}
+						defaultValue={[10, 1000]}
+						minStepsBetweenThumbs={10}
 						onChangeEnd={priceSelection}
 					>
 						<RangeSliderTrack>
