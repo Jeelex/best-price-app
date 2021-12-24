@@ -38,3 +38,13 @@ export async function getProduct(productId) {
 		// setErrorMessage("Something went wrong. Please try again!");
 	}
 }
+
+
+export function addFloatingPoint(productPrice) {
+	const priceOriginal = productPrice.toString();
+	const array = priceOriginal.split("");
+	array.splice(2, 0, ".");
+	const arrayToString = array.join("");
+	const priceWithPeriod = parseFloat(arrayToString);
+	return priceWithPeriod;
+}
