@@ -10,7 +10,7 @@ import {
 	RangeSliderThumb,
 	Box,
 } from "@chakra-ui/react";
-import { addFloatingPoint } from "../utilityFunctions/utilityfunctions";
+import { addFloatingPoint } from "../helperFunctions/helperFunctions";
 
 function ProductsList() {
 	const location = useLocation();

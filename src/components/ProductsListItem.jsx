@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { addFloatingPoint } from "../utilityFunctions/utilityfunctions";
+import { addFloatingPoint } from "../helperFunctions/helperFunctions";
 
 function ProductsListItem({ item }) {
 	function addDescription() {
