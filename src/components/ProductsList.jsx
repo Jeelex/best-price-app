@@ -10,6 +10,7 @@ import {
 	RangeSliderThumb,
 	Box,
 } from "@chakra-ui/react";
+import { addFloatingPoint } from "../utilityFunctions/utilityfunctions";
 
 function ProductsList() {
 	const location = useLocation();
@@ -119,7 +120,7 @@ function ProductsList() {
 						colorScheme="pink"
 						min={0}
 						// max={priceRange[1]}
-						max={8000}
+						max={100}
 						defaultValue={[10, 100]}
 						// step={1000}
 						minStepsBetweenThumbs={5}
@@ -157,7 +158,7 @@ function ProductsList() {
 					.sort((a, b) => (islowToHigh ? b.price - a.price : a.price - b.price))
 					.filter(
 						(product) =>
-							priceRange[0] <= product.price && product.price <= priceRange[1]
+							priceRange[0] <= addFloatingPoint(product.price) && addFloatingPoint(product.price) <= priceRange[1]
 					)
 					.map((product) => (
 						<ProductsListItem key={product.id} item={product} />
