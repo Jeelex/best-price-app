@@ -1,12 +1,11 @@
-import React, { useRef } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { addFloatingPoint } from "../utilityFunctions/utilityfunctions";
 
 function ProductsListItem({ item }) {
-	// let description = useRef();
-
-	// description.current = "hello"
-	// innerHtml = item.description && item.description
+	function addDescription() {
+		return { __html: item.description };
+	}
 
 	return (
 		<>
@@ -14,9 +13,7 @@ function ProductsListItem({ item }) {
 				<img src={item.image_url} alt={`${item.title} thumbnail`} />
 				<h2>{item.title}</h2>
 				<p>{addFloatingPoint(item.price)}&euro;</p>
-				<p>{item.description && item.description}</p>
-				{/* <p ref={description}>{item.description && item.description}</p> */}
-				{/* <p ref={description}></p> */}
+				<p dangerouslySetInnerHTML={addDescription()}></p>
 			</Link>
 			<hr />
 		</>
