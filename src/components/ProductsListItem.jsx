@@ -13,7 +13,17 @@ function ProductsListItem({ item }) {
 				<img src={item.image_url} alt={`${item.title} thumbnail`} />
 				<h2>{item.title}</h2>
 				<p>{addFloatingPoint(item.price)}&euro;</p>
-				<p dangerouslySetInnerHTML={addDescription()}></p>
+				<p
+					style={{
+						// wordBreak: "break-word",
+						textOverflow: "ellipsis",
+						overflow: "hidden",
+						whiteSpace: "nowrap",
+						// width: "200px",
+						maxHeight: "3em",
+					}}
+					dangerouslySetInnerHTML={addDescription()}
+				></p>
 			</Link>
 			<hr />
 		</>
