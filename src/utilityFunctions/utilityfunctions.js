@@ -43,8 +43,10 @@ export async function getProduct(productId) {
 export function addFloatingPoint(productPrice) {
 	const priceOriginal = productPrice.toString();
 	const array = priceOriginal.split("");
-	array.splice(2, 0, ".");
+	// array.splice(2, 0, ".");
+	array.splice(array.length-2, 0, ".");
 	const arrayToString = array.join("");
 	const priceWithPeriod = parseFloat(arrayToString);
 	return priceWithPeriod;
 }
+console.log(addFloatingPoint(121500))

@@ -20,7 +20,8 @@ function ProductsList() {
 	const [totalNumberOfProducts, setTotalNumberOfProducts] = useState(0);
 	const maxProductsPerPage = 15;
 	const maxPageNumber = Math.ceil(totalNumberOfProducts / maxProductsPerPage);
-	const [priceRange, setPriceRange] = useState([10, 80]);
+	const [originalPriceRange, setOriginalPriceRange] = useState([0, 10000]);
+	const [priceRange, setPriceRange] = useState([0, 10000]);
 
 	const [originalData, setOriginalData] = useState([]);
 	const [islowToHigh, setIsLowToHigh] = useState(false);
@@ -39,6 +40,16 @@ function ProductsList() {
 			const allData = await firstResponse.json();
 			setTotalNumberOfProducts(allData.length);
 			setOriginalData(allData);
+			// console.log(originalData[0])
+			const productsMinPrice = originalData[0].price;
+			const productsMaxPrice = originalData[originalData.length-1].price;
+			
+			
+			console.log("productsMinPrice", productsMinPrice);
+			console.log("productsMaxPrice", productsMaxPrice);
+			setOriginalPriceRange(addFloatingPoint(productsMinPrice), addFloatingPoint(productsMaxPrice))
+			setPriceRange(addFloatingPoint(productsMinPrice), addFloatingPoint(productsMaxPrice))
+			// setPriceRange(originalData[0].price, originalData[originalData.length-1].price)
 
 			const response = await fetch(specificPageAPI);
 			const data = await response.json();
@@ -81,6 +92,7 @@ function ProductsList() {
 	function priceSelection(priceRange) {
 		setPriceRange(priceRange);
 	}
+	// console.log("originalPriceRange INITIAL", originalPriceRange);
 	// console.log("priceRange INITIAL", priceRange);
 
 	return (
@@ -95,9 +107,9 @@ function ProductsList() {
 						name="price range"
 						aria-label={["min", "max"]}
 						colorScheme="pink"
-						min={0}
-						max={100}
-						defaultValue={[10, 80]}
+						min={originalPriceRange[0]}
+						max={originalPriceRange[1]}
+						// defaultValue={[10, 80]}
 						minStepsBetweenThumbs={5}
 						onChangeEnd={priceSelection}
 					>

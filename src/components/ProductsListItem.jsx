@@ -10,7 +10,7 @@ function ProductsListItem({ item }) {
 			<Link to={`/products/${item.id}`} state={{ from: item.id }}>
 				<img src={item.image_url} alt={`${item.title} thumbnail`} />
 				<h2>{item.title}</h2>
-				<p>&euro;{addFloatingPoint(item.price)}</p>
+				<p>{addFloatingPoint(item.price)}&euro;</p>
 			</Link>
 			<hr />
 		</>
