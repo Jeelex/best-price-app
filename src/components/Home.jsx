@@ -1,16 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 // import Item from "./Item";
-import {
-	chakra,
-	Box,
-	Image,
-	Flex,
-	VStack,
-	useColorModeValue,
-	Heading,
-	Text,
-} from "@chakra-ui/react";
+import { Box, Image, Flex, VStack, Heading } from "@chakra-ui/react";
 
 function Home() {
 	const [categories, setCategories] = useState([]);
@@ -38,7 +29,9 @@ function Home() {
 
 	return (
 		<div>
-			<Heading as="h1" fontSize="xl">Home</Heading>
+			<Heading as="h1" fontSize="xl">
+				Home
+			</Heading>
 			<VStack spacing={8} align="stretch">
 				{categories.map((category) => (
 					<div key={category.id}>
