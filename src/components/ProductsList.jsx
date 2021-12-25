@@ -29,8 +29,12 @@ function ProductsList() {
 	const maxProductsPerPage = 15;
 	const maxPageNumber = Math.ceil(totalNumberOfProducts / maxProductsPerPage);
 	const [priceRange, setPriceRange] = useState([0, 2800]);
+
 	// const [userPriceRange, setUserPriceRange] = useState([0, 2800]);
 	// const [originalData, setOriginalData] = useState([]);
+	const [userMinPrice, setUserMinPrice] = useState(priceRange[0]);
+	const [userMaxPrice, setUserMaxPrice] = useState(priceRange[1]);
+	const [priceFilters, setPriceFilters] = useState("");
 
 	const [islowToHigh, setIsLowToHigh] = useState(false);
 
@@ -38,7 +42,29 @@ function ProductsList() {
 	let specificPageAPI =
 		API + `?page=${currentPageNo}&limit=${maxProductsPerPage}`;
 
-	async function getProductsList() {
+	let selectedPriceAPI = API + priceFilters;
+
+	// first data fetch + fetching based on current page
+	useEffect(() => {
+		getProductsList(specificPageAPI);
+	}, [currentPageNo]);
+
+	// fetching based on user selected price range
+	// useEffect(() => {
+	// 	getProductsList(selectedPriceAPI);
+	// }, [priceRange]);
+
+	useEffect(() => {
+		setUserMinPrice(priceRange[0]);
+		setUserMaxPrice(priceRange[1]);
+		setPriceFilters(`?min_price=${userMinPrice}&max_price=${userMaxPrice}`);
+		getProductsList(selectedPriceAPI);
+	}, [priceRange]);
+	console.log(selectedPriceAPI);
+	// console.log(userMinPrice, userMaxPrice)
+	// console.log("priceFiltering", priceFilters);
+
+	async function getProductsList(ApiFilter) {
 		// how to add pagination later:
 		// const API = `http://bp-interview.herokuapp.com/categories/${from}/products?page=1&limit=2`;
 		// const API = `http://bp-interview.herokuapp.com/categories/${from}/products?page=${pageNo}&limit=2`;
@@ -55,9 +81,9 @@ function ProductsList() {
 			// console.log("productsMaxPrice", productsMaxPrice)
 			// setUserPriceRange(productsMaxPrice);
 
-			const response = await fetch(specificPageAPI);
+			const response = await fetch(ApiFilter);
 			const data = await response.json();
-			// console.log(data);
+			console.log(data);
 			setProductsList(data);
 		} catch (error) {
 			console.log(error);
@@ -66,14 +92,6 @@ function ProductsList() {
 		// console.log("data initial", originalData);
 	}
 	// console.log("priceRange", priceRange);
-
-	useEffect(() => {
-		getProductsList();
-	}, [currentPageNo]);
-
-	// useEffect(() => {
-	// 	setUserPriceRange();
-	// }, [userPriceRange]);
 
 	function renderPreviousPage() {
 		if (currentPageNo >= 2) {
@@ -120,7 +138,7 @@ function ProductsList() {
 					colorScheme="red"
 					min={0}
 					max={2800}
-					defaultValue={[10, 1000]}
+					defaultValue={[0, 1000]}
 					minStepsBetweenThumbs={10}
 					onChangeEnd={priceSelection}
 				>
@@ -145,11 +163,11 @@ function ProductsList() {
 			<div>
 				{productsList
 					.sort((a, b) => (islowToHigh ? b.price - a.price : a.price - b.price))
-					.filter(
-						(product) =>
-							priceRange[0] <= addFloatingPoint(product.price) &&
-							addFloatingPoint(product.price) <= priceRange[1]
-					)
+					// .filter(
+					// 	(product) =>
+					// 		priceRange[0] <= addFloatingPoint(product.price) &&
+					// 		addFloatingPoint(product.price) <= priceRange[1]
+					// )
 					.map((product) => (
 						<ProductsListItem key={product.id} item={product} />
 					))}
