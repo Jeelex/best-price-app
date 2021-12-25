@@ -1,5 +1,5 @@
 img {
-  width: 200px !important;
-  height: 200px !important;
-  object-fit: cover !important;
+  /* width: 150px !important;
+  height: 100px !important;
+  object-fit: contain !important; */
 }

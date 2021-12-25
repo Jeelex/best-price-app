@@ -9,6 +9,7 @@ import {
 	RangeSliderFilledTrack,
 	RangeSliderThumb,
 	Box,
+	Container,
 } from "@chakra-ui/react";
 import { addFloatingPoint } from "../helperFunctions/helperFunctions";
 
@@ -95,7 +96,7 @@ function ProductsList() {
 	}
 
 	return (
-		<div>
+		<Container maxW="container.lg">
 			<nav>
 				<Link to="/">Home</Link>
 			</nav>
@@ -163,7 +164,7 @@ function ProductsList() {
 			>
 				next
 			</button>
-		</div>
+		</Container>
 	);
 }
 
