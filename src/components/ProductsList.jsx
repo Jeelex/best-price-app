@@ -12,6 +12,9 @@ import {
 	Container,
 	Button,
 	Flex,
+	VStack,
+	Heading,
+	Text,
 } from "@chakra-ui/react";
 import { addFloatingPoint } from "../helperFunctions/helperFunctions";
 import NavigationButtons from "./NavigationButtons";
@@ -100,16 +103,19 @@ function ProductsList() {
 
 	return (
 		<Container maxW="container.lg">
-			<nav>
-				<Link to="/">Home</Link>
-			</nav>
-			<h2>A listing page, which will have a list of products.</h2>
-			<div>
-				<Box padding="1em" width="90%">
+			<VStack spacing={4} align="stretch">
+				<nav>
+					<Link to="/">Home</Link>
+				</nav>
+
+				<Box>
+					<Heading as="h3" fontWeight="600">
+						Εύρος Τιμών: {`€${priceRange[0]} - €${priceRange[1]}`}
+					</Heading>
 					<RangeSlider
 						name="price range"
 						aria-label={["min", "max"]}
-						colorScheme="pink"
+						colorScheme="red"
 						min={0}
 						max={2800}
 						defaultValue={[10, 1000]}
@@ -124,37 +130,37 @@ function ProductsList() {
 					</RangeSlider>
 				</Box>
 
-				<Box>Price Range: {`€${priceRange[0]} - €${priceRange[1]}`}</Box>
-
-				<Button colorScheme="blue" onClick={sortByPrice}>{`Sorting by ${
+				<Button onClick={sortByPrice}>{`Sorting by ${
 					islowToHigh ? "High" : "Low"
 				} Price`}</Button>
-			</div>
 
-			<NavigationButtons
-				currentPageNo={currentPageNo}
-				prevBtnFunction={renderPreviousPage}
-				nextBtnFunction={renderNextPage}
-				maxPageNumber={maxPageNumber}
-			/>
-			<div>
-				{productsList
-					.sort((a, b) => (islowToHigh ? b.price - a.price : a.price - b.price))
-					.filter(
-						(product) =>
-							priceRange[0] <= addFloatingPoint(product.price) &&
-							addFloatingPoint(product.price) <= priceRange[1]
-					)
-					.map((product) => (
-						<ProductsListItem key={product.id} item={product} />
-					))}
-			</div>
-			<NavigationButtons
-				currentPageNo={currentPageNo}
-				prevBtnFunction={renderPreviousPage}
-				nextBtnFunction={renderNextPage}
-				maxPageNumber={maxPageNumber}
-			/>
+				<NavigationButtons
+					currentPageNo={currentPageNo}
+					prevBtnFunction={renderPreviousPage}
+					nextBtnFunction={renderNextPage}
+					maxPageNumber={maxPageNumber}
+				/>
+				<div>
+					{productsList
+						.sort((a, b) =>
+							islowToHigh ? b.price - a.price : a.price - b.price
+						)
+						.filter(
+							(product) =>
+								priceRange[0] <= addFloatingPoint(product.price) &&
+								addFloatingPoint(product.price) <= priceRange[1]
+						)
+						.map((product) => (
+							<ProductsListItem key={product.id} item={product} />
+						))}
+				</div>
+				<NavigationButtons
+					currentPageNo={currentPageNo}
+					prevBtnFunction={renderPreviousPage}
+					nextBtnFunction={renderNextPage}
+					maxPageNumber={maxPageNumber}
+				/>
+			</VStack>
 		</Container>
 	);
 }
