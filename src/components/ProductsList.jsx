@@ -10,8 +10,11 @@ import {
 	RangeSliderThumb,
 	Box,
 	Container,
+	Button,
+	Flex,
 } from "@chakra-ui/react";
 import { addFloatingPoint } from "../helperFunctions/helperFunctions";
+import NavigationButtons from "./NavigationButtons";
 
 function ProductsList() {
 	const location = useLocation();
@@ -123,23 +126,17 @@ function ProductsList() {
 
 				<Box>Price Range: {`€${priceRange[0]} - €${priceRange[1]}`}</Box>
 
-				<button onClick={sortByPrice}>{`Sort by ${
-					islowToHigh ? "Low" : "High"
-				} Price`}</button>
+				<Button colorScheme="blue" onClick={sortByPrice}>{`Sorting by ${
+					islowToHigh ? "High" : "Low"
+				} Price`}</Button>
 			</div>
 
-			<button
-				style={{ opacity: currentPageNo >= 2 ? 1 : 0.5 }}
-				onClick={renderPreviousPage}
-			>
-				previous
-			</button>
-			<button
-				style={{ opacity: currentPageNo < maxPageNumber ? 1 : 0.5 }}
-				onClick={renderNextPage}
-			>
-				next
-			</button>
+			<NavigationButtons
+				currentPageNo={currentPageNo}
+				prevBtnFunction={renderPreviousPage}
+				nextBtnFunction={renderNextPage}
+				maxPageNumber={maxPageNumber}
+			/>
 			<div>
 				{productsList
 					.sort((a, b) => (islowToHigh ? b.price - a.price : a.price - b.price))
@@ -152,18 +149,12 @@ function ProductsList() {
 						<ProductsListItem key={product.id} item={product} />
 					))}
 			</div>
-			<button
-				style={{ opacity: currentPageNo >= 2 ? 1 : 0.5 }}
-				onClick={renderPreviousPage}
-			>
-				previous
-			</button>
-			<button
-				style={{ opacity: currentPageNo < maxPageNumber ? 1 : 0.5 }}
-				onClick={renderNextPage}
-			>
-				next
-			</button>
+			<NavigationButtons
+				currentPageNo={currentPageNo}
+				prevBtnFunction={renderPreviousPage}
+				nextBtnFunction={renderNextPage}
+				maxPageNumber={maxPageNumber}
+			/>
 		</Container>
 	);
 }
