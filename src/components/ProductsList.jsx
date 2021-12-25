@@ -32,19 +32,31 @@ function ProductsList() {
 
 	// const [userPriceRange, setUserPriceRange] = useState([0, 2800]);
 	// const [originalData, setOriginalData] = useState([]);
-	const [userMinPrice, setUserMinPrice] = useState(priceRange[0]);
-	const [userMaxPrice, setUserMaxPrice] = useState(priceRange[1]);
+	const [userMinPrice, setUserMinPrice] = useState(null);
+	const [userMaxPrice, setUserMaxPrice] = useState(null);
 	const [priceFilters, setPriceFilters] = useState("");
+	const [selectedPriceParams, setSelectedPriceParams] = useState("");
 
 	const [islowToHigh, setIsLowToHigh] = useState(false);
 
 	const API = `http://bp-interview.herokuapp.com/categories/${from}/products`;
-	let specificPageAPI =
-		API + `?page=${currentPageNo}&limit=${maxProductsPerPage}`;
 
-	let selectedPriceAPI = API + priceFilters;
+	// let specificPageAPI = API + `?page=${currentPageNo}&limit=${maxProductsPerPage}`;
+	// let specificPageAPI = API + `?page=${currentPageNo}&limit=3`;
+	
+	// let selectedPriceParams = `&min_price=${userMinPrice}&max_price=${userMaxPrice}&limit=3`;
 
+	let specificPageAPI = API + `?page=${currentPageNo}&limit=3` + selectedPriceParams;
+
+	// let selectedPriceAPI = API + priceFilters;
+	// let selectedPriceAPI = API + `?min_price=${userMinPrice}&max_price=${userMaxPrice}&limit=${maxProductsPerPage}`;
+	
+	// let selectedPriceAPI = API + `?min_price=${userMinPrice}&max_price=${userMaxPrice}&limit=3`;
 	// first data fetch + fetching based on current page
+	useEffect(() => {
+		getProductsList(specificPageAPI);
+	}, []);
+
 	useEffect(() => {
 		getProductsList(specificPageAPI);
 	}, [currentPageNo]);
@@ -55,14 +67,19 @@ function ProductsList() {
 	// }, [priceRange]);
 
 	useEffect(() => {
-		setUserMinPrice(priceRange[0]);
-		setUserMaxPrice(priceRange[1]);
-		setPriceFilters(`?min_price=${userMinPrice}&max_price=${userMaxPrice}`);
-		getProductsList(selectedPriceAPI);
+		// multiplying by 100 because prices are in cents
+		setUserMinPrice(priceRange[0] * 100);
+		setUserMaxPrice(priceRange[1] * 100);
+		setSelectedPriceParams(`&min_price=${userMinPrice}&max_price=${userMaxPrice}`);
+		// getProductsList(selectedPriceAPI);
+		getProductsList(specificPageAPI);
 	}, [priceRange]);
-	console.log(selectedPriceAPI);
-	// console.log(userMinPrice, userMaxPrice)
-	// console.log("priceFiltering", priceFilters);
+	console.log("userMinPrice", userMinPrice)
+	console.log("userMaxPrice", userMaxPrice)
+	// console.log("selectedPriceAPI", selectedPriceAPI);
+	console.log("specificPageAPI", specificPageAPI)
+	// console.log("priceFilters", priceFilters);
+	
 
 	async function getProductsList(ApiFilter) {
 		// how to add pagination later:
@@ -131,6 +148,7 @@ function ProductsList() {
 			<Box>
 				<Heading as="h3" fontSize="lg" fontWeight="600">
 					Εύρος Τιμών: {`€${priceRange[0]} - €${priceRange[1]}`}
+					Εύρος Τιμών: {`€${userMinPrice} - €${userMaxPrice}`}
 				</Heading>
 				<RangeSlider
 					name="price range"
