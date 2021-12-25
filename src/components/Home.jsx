@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 // import Item from "./Item";
+import {
+	chakra,
+	Box,
+	Image,
+	Flex,
+	VStack,
+	useColorModeValue,
+	Heading,
+	Text,
+} from "@chakra-ui/react";
 
 function Home() {
 	const [categories, setCategories] = useState([]);
@@ -28,16 +38,45 @@ function Home() {
 
 	return (
 		<div>
-			<h2>Home</h2>
-			{categories.map((category) => (
-				<div key={category.id}>
-					<Link to={`/categories/${category.id}`} state={{ from: category.id }}>
-						<img src={category.image_url} alt={`${category.title} thumbnail`} />
-						<h3>{category.title}</h3>
-					</Link>
-					<hr />
-				</div>
-			))}
+			<Heading as="h1" fontSize="xl">Home</Heading>
+			<VStack spacing={8} align="stretch">
+				{categories.map((category) => (
+					<div key={category.id}>
+						<Link
+							to={`/categories/${category.id}`}
+							state={{ from: category.id }}
+						>
+							{/* <img src={category.image_url} alt={`${category.title} thumbnail`} /> */}
+							{/* <h3>{category.title}</h3> */}
+
+							<Flex
+								w="100%"
+								mx="auto"
+								shadow="lg"
+								rounded="lg"
+								overflow="hidden"
+								justifyContent="center"
+								// alignItems="center"
+							>
+								<Box w={2 / 3} p={{ base: 4, md: 4 }}>
+									<Heading as="h2" size="sm" fontWeight="bold">
+										{category.title}
+									</Heading>
+								</Box>
+								<Flex w={1 / 3} alignItems="center" justifyContent="center">
+									<Image
+										width="150px"
+										height="100px"
+										objectFit="contain"
+										src={category.image_url}
+										alt={`${category.title} thumbnail`}
+									/>
+								</Flex>
+							</Flex>
+						</Link>
+					</div>
+				))}
+			</VStack>
 		</div>
 	);
 }

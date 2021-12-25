@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import ProductsListItem from "./ProductsListItem";
 import { useLocation } from "react-router-dom";
 // import PriceRangeSlider from "./PriceRangeSlider";
@@ -15,6 +15,7 @@ import {
 	VStack,
 	Heading,
 	Text,
+	Link,
 } from "@chakra-ui/react";
 import { addFloatingPoint } from "../helperFunctions/helperFunctions";
 import NavigationButtons from "./NavigationButtons";
@@ -102,66 +103,64 @@ function ProductsList() {
 	}
 
 	return (
-		<Container maxW="container.lg">
-			<VStack spacing={4} align="stretch">
-				<nav>
-					<Link to="/">Home</Link>
-				</nav>
+		<VStack spacing={4} align="stretch">
+			<nav>
+				<Link as={RouterLink} to="/">
+					Home
+				</Link>
+			</nav>
 
-				<Box>
-					<Heading as="h3" fontWeight="600">
-						Εύρος Τιμών: {`€${priceRange[0]} - €${priceRange[1]}`}
-					</Heading>
-					<RangeSlider
-						name="price range"
-						aria-label={["min", "max"]}
-						colorScheme="red"
-						min={0}
-						max={2800}
-						defaultValue={[10, 1000]}
-						minStepsBetweenThumbs={10}
-						onChangeEnd={priceSelection}
-					>
-						<RangeSliderTrack>
-							<RangeSliderFilledTrack />
-						</RangeSliderTrack>
-						<RangeSliderThumb index={0} />
-						<RangeSliderThumb index={1} />
-					</RangeSlider>
-				</Box>
+			<Box>
+				<Heading as="h3" fontSize="lg" fontWeight="600">
+					Εύρος Τιμών: {`€${priceRange[0]} - €${priceRange[1]}`}
+				</Heading>
+				<RangeSlider
+					name="price range"
+					aria-label={["min", "max"]}
+					colorScheme="red"
+					min={0}
+					max={2800}
+					defaultValue={[10, 1000]}
+					minStepsBetweenThumbs={10}
+					onChangeEnd={priceSelection}
+				>
+					<RangeSliderTrack>
+						<RangeSliderFilledTrack />
+					</RangeSliderTrack>
+					<RangeSliderThumb index={0} />
+					<RangeSliderThumb index={1} />
+				</RangeSlider>
+			</Box>
 
-				<Button onClick={sortByPrice}>{`Sorting by ${
-					islowToHigh ? "High" : "Low"
-				} Price`}</Button>
+			<Button onClick={sortByPrice}>{`Sorting by ${
+				islowToHigh ? "High" : "Low"
+			} Price`}</Button>
 
-				<NavigationButtons
-					currentPageNo={currentPageNo}
-					prevBtnFunction={renderPreviousPage}
-					nextBtnFunction={renderNextPage}
-					maxPageNumber={maxPageNumber}
-				/>
-				<div>
-					{productsList
-						.sort((a, b) =>
-							islowToHigh ? b.price - a.price : a.price - b.price
-						)
-						.filter(
-							(product) =>
-								priceRange[0] <= addFloatingPoint(product.price) &&
-								addFloatingPoint(product.price) <= priceRange[1]
-						)
-						.map((product) => (
-							<ProductsListItem key={product.id} item={product} />
-						))}
-				</div>
-				<NavigationButtons
-					currentPageNo={currentPageNo}
-					prevBtnFunction={renderPreviousPage}
-					nextBtnFunction={renderNextPage}
-					maxPageNumber={maxPageNumber}
-				/>
-			</VStack>
-		</Container>
+			<NavigationButtons
+				currentPageNo={currentPageNo}
+				prevBtnFunction={renderPreviousPage}
+				nextBtnFunction={renderNextPage}
+				maxPageNumber={maxPageNumber}
+			/>
+			<div>
+				{productsList
+					.sort((a, b) => (islowToHigh ? b.price - a.price : a.price - b.price))
+					.filter(
+						(product) =>
+							priceRange[0] <= addFloatingPoint(product.price) &&
+							addFloatingPoint(product.price) <= priceRange[1]
+					)
+					.map((product) => (
+						<ProductsListItem key={product.id} item={product} />
+					))}
+			</div>
+			<NavigationButtons
+				currentPageNo={currentPageNo}
+				prevBtnFunction={renderPreviousPage}
+				nextBtnFunction={renderNextPage}
+				maxPageNumber={maxPageNumber}
+			/>
+		</VStack>
 	);
 }
 
