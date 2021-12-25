@@ -4,7 +4,6 @@ import {
 	Box,
 	Image,
 	Flex,
-	Grid,
 	HStack,
 	useColorModeValue,
 	Heading,
@@ -22,20 +21,8 @@ function ProductsListItem({ item }) {
 	return (
 		<>
 			<Link to={`/products/${item.id}`} state={{ from: item.id }}>
-				<Flex
-					// p={50}
-					w="full"
-					alignItems="center"
-					justifyContent="center"
-				>
-					<Flex
-						// maxW="md"
-						w="100%"
-						mx="auto"
-						shadow="lg"
-						rounded="lg"
-						overflow="hidden"
-					>
+				<Flex w="full" alignItems="center" justifyContent="center">
+					<Flex w="100%" mx="auto" shadow="lg" rounded="lg" overflow="hidden">
 						<Flex w={1 / 3} align="center" justify="center">
 							<Image
 								width="150px"
@@ -95,35 +82,6 @@ function ProductsListItem({ item }) {
 						</Box>
 					</Flex>
 				</Flex>
-
-				{/* choc ui ends here */}
-
-				{/* <Grid
-					templateColumns="30% 70%"
-					gap="1em"
-					justifyContent="center"
-					alignItems="center"
-					alignContent="center"
-				>
-					<Image src={item.image_url} alt={`${item.title} thumbnail`} />
-					<Flex direction="column">
-						<h2>{item.title}</h2>
-						<p>{addFloatingPoint(item.price)}&euro;</p>
-						<p
-							style={{
-								wordBreak: "break-word",
-								textOverflow: "ellipsis",
-								overflow: "hidden",
-								// whiteSpace: "nowrap",
-								// width: "200px",
-								// width: "100%",
-								maxHeight: "3em",
-							}}
-							dangerouslySetInnerHTML={addDescription()}
-						></p>
-					</Flex>
-				</Grid>
-			<hr /> */}
 			</Link>
 		</>
 	);
