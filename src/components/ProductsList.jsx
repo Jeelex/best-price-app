@@ -93,7 +93,6 @@ function ProductsList() {
 	useEffect(() => {
 		if (productsList.length < 15 || currentPageNo === maxPageNumber) {
 			setIsCurrentPageTheLastPage(true);
-			console.log("isCurrentPageTheLastPage", isCurrentPageTheLastPage);
 		} else {
 			setIsCurrentPageTheLastPage(false);
 		}
@@ -149,7 +148,6 @@ function ProductsList() {
 		}
 
 		setCurrentPageNo(currentPageNo - 1);
-		console.log("pageNo", currentPageNo);
 	}
 
 	function renderNextPage() {
@@ -160,7 +158,6 @@ function ProductsList() {
 			return;
 		}
 		setCurrentPageNo(currentPageNo + 1);
-		console.log("pageNo", currentPageNo);
 	}
 
 	function sortByPrice() {
