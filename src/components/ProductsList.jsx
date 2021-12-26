@@ -56,7 +56,10 @@ function ProductsList() {
 	// let selectedPriceParams = `&min_price=${userMinPrice}&max_price=${userMaxPrice}&limit=3`;
 
 	let specificPageAPI =
-		API + `?page=${currentPageNo}&limit=15` + selectedPriceParams + selectedSortingParams;
+		API +
+		`?page=${currentPageNo}&limit=15` +
+		selectedPriceParams +
+		selectedSortingParams;
 
 	// let selectedPriceAPI = API + priceFilters;
 	// let selectedPriceAPI = API + `?min_price=${userMinPrice}&max_price=${userMaxPrice}&limit=${maxProductsPerPage}`;
@@ -176,18 +179,17 @@ function ProductsList() {
 	function sortByPrice() {
 		if (islowToHighPriceSorting) {
 			// setCurrentPageNo(1);
-			setSelectedSortingParams("&sort=price&order=desc")
+			setSelectedSortingParams("&sort=price&order=desc");
 		} else {
 			setCurrentPageNo(maxPageNumber);
-			setSelectedSortingParams("")
+			setSelectedSortingParams("");
 		}
 		setIsLowToHighPriceSorting(!islowToHighPriceSorting);
 
-		setSelectedSortingParams("&sort=price&order=desc")
-
+		setSelectedSortingParams("&sort=price&order=desc");
 	}
 	// console.log("islowToHigh", islowToHigh)
-	console.log("specificPageAPI", specificPageAPI)
+	console.log("specificPageAPI", specificPageAPI);
 
 	function priceSelection(priceRange) {
 		setPriceRange(priceRange);
@@ -225,7 +227,7 @@ function ProductsList() {
 			</Box>
 
 			<Button onClick={sortByPrice}>{`Sorting by ${
-				islowToHighPriceSorting ? "Low":  "High"
+				islowToHighPriceSorting ? "Low" : "High"
 			} Price`}</Button>
 
 			<NavigationButtons
@@ -235,26 +237,15 @@ function ProductsList() {
 				maxPageNumber={maxPageNumber}
 			/>
 			<div>
-				{productsList
-					// .sort((a, b) =>
-					// 	islowToHighPriceSorting ? b.price - a.price : a.price - b.price
-					// )
-					// .filter(
-					// 	(product) =>
-					// 		priceRange[0] <= addFloatingPoint(product.price) &&
-					// 		addFloatingPoint(product.price) <= priceRange[1]
-					// )
-					.map((product) => (
-						<ProductsListItem key={product.id} item={product} />
-					))}
+				{productsList.map((product) => (
+					<ProductsListItem key={product.id} item={product} />
+				))}
 			</div>
 			<NavigationButtons
 				currentPageNo={currentPageNo}
 				prevBtnFunction={renderPreviousPage}
 				nextBtnFunction={renderNextPage}
 				maxPageNumber={maxPageNumber}
-				// prevBtnDisabled={areAllProductsDisplayed ? true : false }
-				nextBtnDisabled={isCurrentPageTheLastPage ? true : false}
 			/>
 		</VStack>
 	);
