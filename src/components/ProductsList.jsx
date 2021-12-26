@@ -195,7 +195,6 @@ function ProductsList() {
 					aria-label={["min", "max"]}
 					colorScheme="red"
 					min={0}
-					// max={2800}
 					max={originMaxPrice}
 					defaultValue={[0, 500]}
 					// defaultValue={[0, originMaxPriceHalf]}
