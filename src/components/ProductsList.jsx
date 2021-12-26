@@ -164,6 +164,14 @@ function ProductsList() {
 	}
 
 	function sortByPrice() {
+		if (islowToHighPriceSorting && isCurrentPageTheLastPage) {
+			setCurrentPageNo(1);
+		}
+
+		if (!islowToHighPriceSorting && currentPageNo === maxPageNumber) {
+			setCurrentPageNo(1);
+		}
+
 		if (islowToHighPriceSorting) {
 			setSelectedSortingParams("&sort=price&order=desc");
 		} else {
@@ -188,7 +196,10 @@ function ProductsList() {
 
 			<Box>
 				<Heading as="h3" fontSize="lg" fontWeight="600" margin="0.5em 0">
-					Εύρος Τιμών: {hasUserSelectedPrice ? `€${priceRange[0]} - €${priceRange[1]}` : `€${originMinPrice} - €${originMaxPrice}`}
+					Εύρος Τιμών:{" "}
+					{hasUserSelectedPrice
+						? `€${priceRange[0]} - €${priceRange[1]}`
+						: `€${originMinPrice} - €${originMaxPrice}`}
 				</Heading>
 				<RangeSlider
 					name="price range"
