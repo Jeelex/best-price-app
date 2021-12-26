@@ -41,6 +41,9 @@ function ProductsList() {
 	const [isCurrentPageTheLastPage, setIsCurrentPageTheLastPage] =
 		useState(false);
 
+	const [isfirstItemInCurrentPage, setIsfirstItemInCurrentPage] =
+		useState(false);
+
 	const [
 		isLastItemSameAsLastItemInWholeList,
 		setIsLastItemSameAsLastItemInWholeList,
@@ -122,11 +125,23 @@ function ProductsList() {
 
 	// checking if last item in currentPage is last item in wholeProductsList
 	useEffect(() => {
+		// const firstItemIdInCurrentPage =
+		// 	productsList.length > 0 && productsList[0].id;
+		const firstItemIdInWholeList =
+			wholeProductsList.length > 0 && wholeProductsList[0].id;
+
 		const lastItemIdInCurrentPage =
 			productsList.length > 0 && productsList[productsList.length - 1].id;
 		const lastItemIdInWholeList =
 			wholeProductsList.length > 0 &&
 			wholeProductsList[wholeProductsList.length - 1].id;
+
+		if (lastItemIdInCurrentPage === firstItemIdInWholeList) {
+			setIsfirstItemInCurrentPage(true);
+			console.log("isfirstItemInCurrentPage", isfirstItemInCurrentPage);
+		} else {
+			setIsfirstItemInCurrentPage(false);
+		}
 
 		if (lastItemIdInCurrentPage === lastItemIdInWholeList) {
 			setIsLastItemSameAsLastItemInWholeList(true);
@@ -137,7 +152,13 @@ function ProductsList() {
 		} else {
 			setIsLastItemSameAsLastItemInWholeList(false);
 		}
-	}, [isLastItemSameAsLastItemInWholeList, productsList, wholeProductsList]);
+	}, [
+		isLastItemSameAsLastItemInWholeList,
+		isfirstItemInCurrentPage,
+		productsList,
+		setIsfirstItemInCurrentPage,
+		wholeProductsList,
+	]);
 
 	// useEffect(() => {
 	// 	getProductsList(specificPageAPI);
@@ -151,14 +172,16 @@ function ProductsList() {
 	// console.log("priceFilters", priceFilters);
 
 	function renderPreviousPage() {
-		if (isCurrentPageTheLastPage || currentPageNo === 1) {
-			console.log("previous btn should be disabled");
-			// return;
+		if (currentPageNo === 1) {
+			// 	console.log("previous btn should be disabled");
+			console.log("it's the first page");
+			return;
 		}
 
-		if (currentPageNo >= 2) {
-			setCurrentPageNo(currentPageNo - 1);
-		}
+		// if (currentPageNo >= 2) {
+		// 	setCurrentPageNo(currentPageNo - 1);
+		// }
+		setCurrentPageNo(currentPageNo - 1);
 		console.log("pageNo", currentPageNo);
 	}
 
@@ -189,7 +212,6 @@ function ProductsList() {
 		setSelectedSortingParams("&sort=price&order=desc");
 	}
 	// console.log("islowToHigh", islowToHigh)
-	console.log("specificPageAPI", specificPageAPI);
 
 	function priceSelection(priceRange) {
 		setPriceRange(priceRange);
@@ -234,7 +256,7 @@ function ProductsList() {
 				currentPageNo={currentPageNo}
 				prevBtnFunction={renderPreviousPage}
 				nextBtnFunction={renderNextPage}
-				maxPageNumber={maxPageNumber}
+				isCurrentPageTheLastPage={isCurrentPageTheLastPage}
 			/>
 			<div>
 				{productsList.map((product) => (
@@ -245,7 +267,7 @@ function ProductsList() {
 				currentPageNo={currentPageNo}
 				prevBtnFunction={renderPreviousPage}
 				nextBtnFunction={renderNextPage}
-				maxPageNumber={maxPageNumber}
+				isCurrentPageTheLastPage={isCurrentPageTheLastPage}
 			/>
 		</VStack>
 	);
