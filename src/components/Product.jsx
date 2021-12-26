@@ -9,8 +9,8 @@ function Product() {
 	const location = useLocation();
 	const { from } = location.state;
 	const { slug_path } = useParams();
-	console.log(slug_path)
-	console.log(from)
+	console.log(slug_path);
+	console.log(from);
 
 	// first data fetch
 	useEffect(() => {
@@ -20,7 +20,6 @@ function Product() {
 			.then(
 				(data) => {
 					setProduct(data);
-					console.log(data);
 				},
 				(error) => {
 					console.log(error);
