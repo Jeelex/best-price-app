@@ -217,7 +217,7 @@ function ProductsList() {
 					</RangeSlider>
 				</Box>
 
-				<Button onClick={sortByPrice} maxWidth="200px">{`Sorting by ${
+				<Button onClick={sortByPrice} maxWidth={{ sm: "200px" }}>{`Sorting by ${
 					islowToHighPriceSorting ? "Low" : "High"
 				} Price`}</Button>
 
