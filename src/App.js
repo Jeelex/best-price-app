@@ -11,8 +11,10 @@ function App() {
 			<Container maxW="container.lg">
 				<Routes>
 					<Route path="/" element={<Home />} />
-					<Route path="categories/:id" element={<ProductsList />} />
-					<Route path="products/:id" element={<Product />} />
+					{/* <Route path="categories/:id/" element={<ProductsList />} /> */}
+					<Route path="categories/:id/:slug" element={<ProductsList />} />
+					{/* <Route path="categories/:id:limit" element={<ProductsList />} /> */}
+					<Route path="products/:id/:slug" element={<Product />} />
 				</Routes>
 			</Container>
 		</ChakraProvider>

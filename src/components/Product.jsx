@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { Flex, VStack, Heading, Text, Image } from "@chakra-ui/react";
 import { addDescription, addFloatingPoint } from "../helperFunctions/helperFunctions";
 import Navbar from "./Navbar";
@@ -8,6 +8,9 @@ function Product() {
 	const [product, setProduct] = useState({});
 	const location = useLocation();
 	const { from } = location.state;
+	const { slug_path } = useParams();
+	console.log(slug_path)
+	console.log(from)
 
 	// first data fetch
 	useEffect(() => {
@@ -17,6 +20,7 @@ function Product() {
 			.then(
 				(data) => {
 					setProduct(data);
+					console.log(data);
 				},
 				(error) => {
 					console.log(error);
