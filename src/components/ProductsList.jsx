@@ -36,6 +36,7 @@ function ProductsList() {
 	const [userMaxPrice, setUserMaxPrice] = useState(28000);
 	const [priceFilters, setPriceFilters] = useState("");
 	const [selectedPriceParams, setSelectedPriceParams] = useState("");
+	const [areAllProductsDisplayed, setAreAllProductsDisplayed] = useState(false);
 
 	const [islowToHigh, setIsLowToHigh] = useState(false);
 
@@ -104,47 +105,37 @@ function ProductsList() {
 		// getProductsList(specificPageAPI);
 	}, [priceRange, userMaxPrice, userMinPrice]);
 
+	//TODO trying to check if currentPageNo is the last in order to disable next button
+	useEffect(() => {
+		if (productsList.length < 15) {
+			console.log(productsList)
+			console.log("less than 15!");
+			// setAreAllProductsDisplayed(!areAllProductsDisplayed);
+			setAreAllProductsDisplayed(true);
+			console.log(areAllProductsDisplayed);
+		} else {
+			setAreAllProductsDisplayed(false);
+		}
+	}, [areAllProductsDisplayed, productsList])
+
 	// useEffect(() => {
 	// 	getProductsList(specificPageAPI);
 	// 	console.log("specificPageAPI", specificPageAPI);
 	// }, [selectedPriceParams])
 
-	console.log("userMinPrice", userMinPrice);
-	console.log("userMaxPrice", userMaxPrice);
+	// console.log("userMinPrice", userMinPrice);
+	// console.log("userMaxPrice", userMaxPrice);
 	// console.log("selectedPriceAPI", selectedPriceAPI);
 	// console.log("specificPageAPI", specificPageAPI);
 	// console.log("priceFilters", priceFilters);
 
-	// async function getProductsList(ApiFilter) {
-	// 	// how to add pagination later:
-	// 	// const API = `http://bp-interview.herokuapp.com/categories/${from}/products?page=1&limit=2`;
-	// 	// const API = `http://bp-interview.herokuapp.com/categories/${from}/products?page=${pageNo}&limit=2`;
+	
 
-	// 	try {
-	// 		const firstResponse = await fetch(API);
-	// 		const allData = await firstResponse.json();
-	// 		setTotalNumberOfProducts(allData.length);
-	// 		// setOriginalData(allData);
-	// 		// console.log(allData)
-	// 		// const productsMinPrice = allData[0].price;
-	// 		// const productsMaxPrice = allData[allData.length - 1].price;
-	// 		// console.log("productsMinPrice", productsMinPrice)
-	// 		// console.log("productsMaxPrice", productsMaxPrice)
-	// 		// setUserPriceRange(productsMaxPrice);
 
-	// 		const response = await fetch(ApiFilter);
-	// 		const data = await response.json();
-	// 		console.log(data);
-	// 		setProductsList(data);
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 		// setErrorMessage("Something went wrong. Please try again!");
-	// 	}
-	// 	// console.log("data initial", originalData);
-	// }
-	// // console.log("priceRange", priceRange);
 
 	function renderPreviousPage() {
+		//if
+
 		if (currentPageNo >= 2) {
 			setCurrentPageNo(currentPageNo - 1);
 		}
