@@ -215,6 +215,7 @@ function ProductsList() {
 
 	function priceSelection(priceRange) {
 		setPriceRange(priceRange);
+		setCurrentPageNo(1)
 	}
 
 	return (
