@@ -17,7 +17,6 @@ function Product() {
 			.then(
 				(data) => {
 					setProduct(data);
-					console.log("product id", from);
 				},
 				(error) => {
 					console.log(error);
