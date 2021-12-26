@@ -7,10 +7,10 @@ function Product() {
 	const location = useLocation();
 	const { from } = location.state;
 
-	const API = `http://bp-interview.herokuapp.com/products/${from}`;
-
+	
 	// first data fetch
 	useEffect(() => {
+		const API = `http://bp-interview.herokuapp.com/products/${from}`;
 		fetch(API)
 			.then((response) => response.json())
 			.then(
@@ -22,7 +22,7 @@ function Product() {
 					console.log(error);
 				}
 			);
-	}, [API, from]);
+	}, [from]);
 
 	return (
 		<div>
