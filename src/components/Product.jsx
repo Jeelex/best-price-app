@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { Flex, VStack, Heading, Text, Link, Image } from "@chakra-ui/react";
 import { addDescription, addFloatingPoint } from "../helperFunctions/helperFunctions";
+import Navbar from "./Navbar";
+
 
 function Product() {
 	const [product, setProduct] = useState({});
@@ -24,8 +26,11 @@ function Product() {
 			);
 	}, [from]);
 
+	console.log(product)
+
 	return (
 		<div>
+			<Navbar />
 			<nav>
 				<Link as={RouterLink} to="/">
 					Home
