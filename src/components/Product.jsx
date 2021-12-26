@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link as RouterLink, useLocation } from "react-router-dom";
-import { Flex, VStack, Heading, Text, Link, Image } from "@chakra-ui/react";
+import { useLocation } from "react-router-dom";
+import { Flex, VStack, Heading, Text, Image } from "@chakra-ui/react";
 import { addDescription, addFloatingPoint } from "../helperFunctions/helperFunctions";
 import Navbar from "./Navbar";
 
@@ -33,7 +33,6 @@ function Product() {
 			<VStack spacing={4} align="stretch">
 				<Flex justifyContent="center" alignItems="center">
 					<Image
-						// width="auto"
 						height="55vh"
 						objectFit="contain"
 						src={product.image_url}
@@ -45,9 +44,10 @@ function Product() {
 				</Heading>
 				<p>{addFloatingPoint(product.price)}€</p>
 				<Text
+					// TODO add ellipsis in product description
+					// textOverflow="ellipsis"
 					mt={2}
 					fontSize="sm"
-					// textOverflow="ellipsis"
 					overflow="hidden"
 					maxHeight="8rem"
 					dangerouslySetInnerHTML={addDescription(product)}
