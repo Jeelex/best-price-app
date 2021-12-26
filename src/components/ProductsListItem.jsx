@@ -35,10 +35,10 @@ function ProductsListItem({ item }) {
 							</Heading>
 
 							<Text
+								// TODO add ellipsis in product description
+								// textOverflow="ellipsis"
 								mt={2}
 								fontSize="sm"
-								wordBreak="break-word"
-								textOverflow="ellipsis"
 								overflow="hidden"
 								maxHeight="3em"
 								dangerouslySetInnerHTML={addDescription(item)}
