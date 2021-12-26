@@ -201,21 +201,17 @@ function ProductsList() {
 
 	function sortByPrice() {
 		if (islowToHighPriceSorting) {
-			// setCurrentPageNo(1);
 			setSelectedSortingParams("&sort=price&order=desc");
 		} else {
-			setCurrentPageNo(maxPageNumber);
 			setSelectedSortingParams("");
 		}
-		setIsLowToHighPriceSorting(!islowToHighPriceSorting);
 
-		setSelectedSortingParams("&sort=price&order=desc");
+		setIsLowToHighPriceSorting(!islowToHighPriceSorting);
 	}
-	// console.log("islowToHigh", islowToHigh)
 
 	function priceSelection(priceRange) {
 		setPriceRange(priceRange);
-		setCurrentPageNo(1)
+		setCurrentPageNo(1);
 	}
 
 	return (
