@@ -113,18 +113,37 @@ function ProductsList() {
 		// getProductsList(specificPageAPI);
 	}, [priceRange, userMaxPrice, userMinPrice]);
 
-	//TODO trying to check if currentPageNo is the last in order to disable next button
+	//checking if current page is the last page
 	useEffect(() => {
 		if (productsList.length < 15 || currentPageNo === maxPageNumber) {
 			// console.log("less than 15!");
 			// console.log(productsList);
 			// setAreAllProductsDisplayed(!areAllProductsDisplayed);
 			setIsCurrentPageTheLastPage(true);
+			console.log("isCurrentPageTheLastPage", isCurrentPageTheLastPage);
 		} else {
 			setIsCurrentPageTheLastPage(false);
 		}
 	}, [currentPageNo, isCurrentPageTheLastPage, maxPageNumber, productsList]);
-	console.log("isCurrentPageTheLastPage", isCurrentPageTheLastPage);
+
+	// checking if last item in currentPage is last item in wholeProductsList
+	useEffect(() => {
+		const lastItemIdInCurrentPage =
+			productsList.length > 0 && productsList[productsList.length - 1].id;
+		const lastItemIdInWholeList =
+			wholeProductsList.length > 0 &&
+			wholeProductsList[wholeProductsList.length - 1].id;
+
+		if (lastItemIdInCurrentPage === lastItemIdInWholeList) {
+			setIsLastItemSameAsLastItemInWholeList(true);
+			console.log(
+				"isLastItemSameAsLastItemInWholeList",
+				isLastItemSameAsLastItemInWholeList
+			);
+		} else {
+			setIsLastItemSameAsLastItemInWholeList(false);
+		}
+	}, [isLastItemSameAsLastItemInWholeList, productsList, wholeProductsList]);
 
 	// useEffect(() => {
 	// 	getProductsList(specificPageAPI);
@@ -148,27 +167,6 @@ function ProductsList() {
 		}
 		console.log("pageNo", currentPageNo);
 	}
-
-	// checking if last item in currentPage is last item in wholeProductsList
-	useEffect(() => {
-		const lastItemIdInCurrentPage =
-			productsList.length > 0 && productsList[productsList.length - 1].id;
-		const lastItemIdInWholeList =
-			wholeProductsList.length > 0 &&
-			wholeProductsList[wholeProductsList.length - 1].id;
-		// console.log("last item currentPage", lastItemIdInCurrentPage);
-		// console.log("last item Whole List", lastItemIdInWholeList);
-		if (lastItemIdInCurrentPage === lastItemIdInWholeList) {
-			console.log("same product!");
-			setIsLastItemSameAsLastItemInWholeList(true);
-		} else {
-			setIsLastItemSameAsLastItemInWholeList(false);
-		}
-		console.log(
-			"isLastItemSameAsLastItemInWholeList",
-			isLastItemSameAsLastItemInWholeList
-		);
-	});
 
 	function renderNextPage() {
 		if (isLastItemSameAsLastItemInWholeList && isCurrentPageTheLastPage) {
