@@ -9,15 +9,11 @@ import {
 	RangeSliderFilledTrack,
 	RangeSliderThumb,
 	Box,
-	Container,
 	Button,
-	Flex,
 	VStack,
 	Heading,
-	Text,
 	Link,
 } from "@chakra-ui/react";
-import { addFloatingPoint } from "../helperFunctions/helperFunctions";
 import NavigationButtons from "./NavigationButtons";
 
 function ProductsList() {
@@ -30,44 +26,20 @@ function ProductsList() {
 	const maxProductsPerPage = 15;
 	const maxPageNumber = Math.ceil(totalNumberOfProducts / maxProductsPerPage);
 	const [priceRange, setPriceRange] = useState([0, 2800]);
-
-	// const [userPriceRange, setUserPriceRange] = useState([0, 2800]);
-	// const [originalData, setOriginalData] = useState([]);
 	const [userMinPrice, setUserMinPrice] = useState(0);
 	const [userMaxPrice, setUserMaxPrice] = useState(28000);
-	const [priceFilters, setPriceFilters] = useState("");
 	const [selectedPriceParams, setSelectedPriceParams] = useState("");
 	const [selectedSortingParams, setSelectedSortingParams] = useState("");
-	const [isCurrentPageTheLastPage, setIsCurrentPageTheLastPage] =
+	const [isCurrentPageTheLastPage, setIsCurrentPageTheLastPage] = useState(false);
+	const [isfirstItemInCurrentPage, setIsfirstItemInCurrentPage] = useState(false);
+	const [isLastItemSameAsLastItemInWholeList, setIsLastItemSameAsLastItemInWholeList] =
 		useState(false);
-
-	const [isfirstItemInCurrentPage, setIsfirstItemInCurrentPage] =
-		useState(false);
-
-	const [
-		isLastItemSameAsLastItemInWholeList,
-		setIsLastItemSameAsLastItemInWholeList,
-	] = useState(false);
-
 	const [islowToHighPriceSorting, setIsLowToHighPriceSorting] = useState(true);
 
 	const API = `http://bp-interview.herokuapp.com/categories/${from}/products`;
 
-	// let specificPageAPI = API + `?page=${currentPageNo}&limit=${maxProductsPerPage}`;
-	// let specificPageAPI = API + `?page=${currentPageNo}&limit=3`;
-
-	// let selectedPriceParams = `&min_price=${userMinPrice}&max_price=${userMaxPrice}&limit=3`;
-
-	let specificPageAPI =
-		API +
-		`?page=${currentPageNo}&limit=15` +
-		selectedPriceParams +
-		selectedSortingParams;
-
-	// let selectedPriceAPI = API + priceFilters;
-	// let selectedPriceAPI = API + `?min_price=${userMinPrice}&max_price=${userMaxPrice}&limit=${maxProductsPerPage}`;
-
-	// let selectedPriceAPI = API + `?min_price=${userMinPrice}&max_price=${userMaxPrice}&limit=3`;
+	let selectedParamsAPI =
+		API + `?page=${currentPageNo}&limit=15` + selectedPriceParams + selectedSortingParams;
 
 	// first data fetch
 	useEffect(() => {
@@ -86,7 +58,7 @@ function ProductsList() {
 
 	// data fetching based on price range and/or currentPageNo
 	useEffect(() => {
-		fetch(specificPageAPI)
+		fetch(selectedParamsAPI)
 			.then((data) => data.json())
 			.then(
 				(data) => {
@@ -96,26 +68,19 @@ function ProductsList() {
 					console.log(error);
 				}
 			);
-	}, [currentPageNo, priceRange, specificPageAPI]);
+	}, [currentPageNo, priceRange, selectedParamsAPI]);
 
 	// updating price range based on user selection
 	useEffect(() => {
 		// multiplying by 100 because prices are in cents
 		setUserMinPrice(priceRange[0] * 100);
 		setUserMaxPrice(priceRange[1] * 100);
-		setSelectedPriceParams(
-			`&min_price=${userMinPrice}&max_price=${userMaxPrice}`
-		);
-		// getProductsList(selectedPriceAPI);
-		// getProductsList(specificPageAPI);
+		setSelectedPriceParams(`&min_price=${userMinPrice}&max_price=${userMaxPrice}`);
 	}, [priceRange, userMaxPrice, userMinPrice]);
 
 	//checking if current page is the last page
 	useEffect(() => {
 		if (productsList.length < 15 || currentPageNo === maxPageNumber) {
-			// console.log("less than 15!");
-			// console.log(productsList);
-			// setAreAllProductsDisplayed(!areAllProductsDisplayed);
 			setIsCurrentPageTheLastPage(true);
 			console.log("isCurrentPageTheLastPage", isCurrentPageTheLastPage);
 		} else {
@@ -123,18 +88,14 @@ function ProductsList() {
 		}
 	}, [currentPageNo, isCurrentPageTheLastPage, maxPageNumber, productsList]);
 
-	// checking if last item in currentPage is last item in wholeProductsList
+	// checking if last item in currentPage is first OR last item in wholeProductsList
 	useEffect(() => {
-		// const firstItemIdInCurrentPage =
-		// 	productsList.length > 0 && productsList[0].id;
-		const firstItemIdInWholeList =
-			wholeProductsList.length > 0 && wholeProductsList[0].id;
+		const firstItemIdInWholeList = wholeProductsList.length > 0 && wholeProductsList[0].id;
 
 		const lastItemIdInCurrentPage =
 			productsList.length > 0 && productsList[productsList.length - 1].id;
 		const lastItemIdInWholeList =
-			wholeProductsList.length > 0 &&
-			wholeProductsList[wholeProductsList.length - 1].id;
+			wholeProductsList.length > 0 && wholeProductsList[wholeProductsList.length - 1].id;
 
 		if (lastItemIdInCurrentPage === firstItemIdInWholeList) {
 			setIsfirstItemInCurrentPage(true);
@@ -145,10 +106,7 @@ function ProductsList() {
 
 		if (lastItemIdInCurrentPage === lastItemIdInWholeList) {
 			setIsLastItemSameAsLastItemInWholeList(true);
-			console.log(
-				"isLastItemSameAsLastItemInWholeList",
-				isLastItemSameAsLastItemInWholeList
-			);
+			console.log("isLastItemSameAsLastItemInWholeList", isLastItemSameAsLastItemInWholeList);
 		} else {
 			setIsLastItemSameAsLastItemInWholeList(false);
 		}
@@ -160,34 +118,18 @@ function ProductsList() {
 		wholeProductsList,
 	]);
 
-	// useEffect(() => {
-	// 	getProductsList(specificPageAPI);
-	// 	console.log("specificPageAPI", specificPageAPI);
-	// }, [selectedPriceParams])
-
-	// console.log("userMinPrice", userMinPrice);
-	// console.log("userMaxPrice", userMaxPrice);
-	// console.log("selectedPriceAPI", selectedPriceAPI);
-	// console.log("specificPageAPI", specificPageAPI);
-	// console.log("priceFilters", priceFilters);
-
 	function renderPreviousPage() {
 		if (currentPageNo === 1) {
-			// 	console.log("previous btn should be disabled");
 			console.log("it's the first page");
 			return;
 		}
 
-		// if (currentPageNo >= 2) {
-		// 	setCurrentPageNo(currentPageNo - 1);
-		// }
 		setCurrentPageNo(currentPageNo - 1);
 		console.log("pageNo", currentPageNo);
 	}
 
 	function renderNextPage() {
 		if (isLastItemSameAsLastItemInWholeList && isCurrentPageTheLastPage) {
-			// console.log("next btn should be disabled");
 			return;
 		}
 		if (isCurrentPageTheLastPage) {
@@ -205,7 +147,6 @@ function ProductsList() {
 		} else {
 			setSelectedSortingParams("");
 		}
-
 		setIsLowToHighPriceSorting(!islowToHighPriceSorting);
 	}
 
@@ -223,9 +164,8 @@ function ProductsList() {
 			</nav>
 
 			<Box>
-				<Heading as="h3" fontSize="lg" fontWeight="600">
+				<Heading as="h3" fontSize="lg" fontWeight="600" margin="0.5em 0">
 					Εύρος Τιμών: {`€${priceRange[0]} - €${priceRange[1]}`}
-					Εύρος Τιμών: {`€${userMinPrice} - €${userMaxPrice}`}
 				</Heading>
 				<RangeSlider
 					name="price range"
