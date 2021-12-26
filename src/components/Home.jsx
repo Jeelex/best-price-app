@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-// import Item from "./Item";
 import { Box, Image, Flex, VStack, Heading } from "@chakra-ui/react";
 
 function Home() {
@@ -29,9 +28,6 @@ function Home() {
 				{categories.map((category) => (
 					<div key={category.id}>
 						<Link to={`/categories/${category.id}`} state={{ from: category.id }}>
-							{/* <img src={category.image_url} alt={`${category.title} thumbnail`} /> */}
-							{/* <h3>{category.title}</h3> */}
-
 							<Flex
 								w="100%"
 								mx="auto"
