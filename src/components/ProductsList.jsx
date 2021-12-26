@@ -200,7 +200,7 @@ function ProductsList() {
 					</Heading>
 					<RangeSlider
 						name="price range"
-						aria-label={["min", "max"]}
+						aria-label="min/max price range sliders"
 						colorScheme="red"
 						min={0}
 						max={originMaxPrice}
