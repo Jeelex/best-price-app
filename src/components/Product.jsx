@@ -44,7 +44,7 @@ function Product() {
 				<Heading as="h2" size="sm" fontWeight="bold">
 					{product.title}
 				</Heading>
-				<p>{addFloatingPoint(product && product.price)}€</p>
+				<p>{addFloatingPoint(product.price)}€</p>
 				<Text
 					mt={2}
 					fontSize="sm"
