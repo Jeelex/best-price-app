@@ -38,7 +38,7 @@ function ProductsList() {
 	const [selectedPriceParams, setSelectedPriceParams] = useState("");
 	const [areAllProductsDisplayed, setAreAllProductsDisplayed] = useState(false);
 
-	const [islowToHigh, setIsLowToHigh] = useState(false);
+	const [islowToHighPriceSorting, setIsLowToHighPriceSorting] = useState(false);
 
 	const API = `http://bp-interview.herokuapp.com/categories/${from}/products`;
 
@@ -108,8 +108,8 @@ function ProductsList() {
 	//TODO trying to check if currentPageNo is the last in order to disable next button
 	useEffect(() => {
 		if (productsList.length < 15) {
-			console.log("less than 15!");
-			console.log(productsList);
+			// console.log("less than 15!");
+			// console.log(productsList);
 			// setAreAllProductsDisplayed(!areAllProductsDisplayed);
 			setAreAllProductsDisplayed(true);
 		} else {
@@ -153,12 +153,12 @@ function ProductsList() {
 	}
 
 	function sortByPrice() {
-		if (islowToHigh) {
+		if (islowToHighPriceSorting) {
 			setCurrentPageNo(1);
 		} else {
 			setCurrentPageNo(maxPageNumber);
 		}
-		setIsLowToHigh(!islowToHigh);
+		setIsLowToHighPriceSorting(!islowToHighPriceSorting);
 	}
 	// console.log("islowToHigh", islowToHigh)
 
@@ -198,20 +198,20 @@ function ProductsList() {
 			</Box>
 
 			<Button onClick={sortByPrice}>{`Sorting by ${
-				islowToHigh ? "High" : "Low"
+				islowToHighPriceSorting ? "High" : "Low"
 			} Price`}</Button>
 
 			<NavigationButtons
 				currentPageNo={currentPageNo}
-				prevBtnFunction={renderPreviousPage}
-				nextBtnFunction={renderNextPage}
+				prevBtnFunction={islowToHighPriceSorting ? renderNextPage : renderPreviousPage}
+				nextBtnFunction={islowToHighPriceSorting ? renderPreviousPage : renderNextPage}
 				maxPageNumber={maxPageNumber}
-				prevBtnDisabled={areAllProductsDisplayed || currentPageNo === 1 ? true : false }
+				// prevBtnDisabled={areAllProductsDisplayed || currentPageNo === 1 ? true : false }
 				nextBtnDisabled={areAllProductsDisplayed ? true : false}
 			/>
 			<div>
 				{productsList
-					.sort((a, b) => (islowToHigh ? b.price - a.price : a.price - b.price))
+					.sort((a, b) => (islowToHighPriceSorting ? b.price - a.price : a.price - b.price))
 					// .filter(
 					// 	(product) =>
 					// 		priceRange[0] <= addFloatingPoint(product.price) &&
