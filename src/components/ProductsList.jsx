@@ -41,17 +41,10 @@ function ProductsList() {
 	const [originMaxPrice, setOriginMaxPrice] = useState(productsMaxPrice);
 	const [hasUserSelectedPrice, setHasUserSelectedPrice] = useState(false);
 
-	// const { id } = useParams();
-	// // console.log(useParams());
-	// console.log(id);
-
 	const API = `https://bp-interview.herokuapp.com/categories/${from}/products`;
 
 	let selectedParamsAPI =
 		API + `?page=${currentPageNo}&limit=15` + selectedPriceParams + selectedSortingParams;
-	// let selectedParamsAPI =
-		// API + "&limit=15"
-		// `?page=${currentPageNo}&limit=15` + selectedPriceParams + selectedSortingParams;
 
 	// first data fetch
 	useEffect(() => {

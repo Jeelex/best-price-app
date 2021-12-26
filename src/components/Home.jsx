@@ -13,7 +13,7 @@ function Home() {
 			.then(
 				(data) => {
 					setCategories(data);
-					console.log(data)
+					console.log(data);
 				},
 				(error) => {
 					console.log(error);
@@ -28,7 +28,6 @@ function Home() {
 			<VStack spacing={8} align="stretch">
 				{categories.map((category) => (
 					<div key={category.id}>
-						{/* <Link to={`/categories/${category.id}`} state={{ from: category.id }}> */}
 						<Link to={`/categories/${category.id}/${category.slug}`} state={{ from: category.id }}>
 							<Flex
 								w="100%"
