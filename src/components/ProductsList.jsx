@@ -216,9 +216,9 @@ function ProductsList() {
 					</RangeSlider>
 				</Box>
 
-				<Button onClick={sortByPrice} maxWidth={{ sm: "200px" }}>{`Sorting by ${
-					islowToHighPriceSorting ? "Low" : "High"
-				} Price`}</Button>
+				<Button onClick={sortByPrice} maxWidth={{ sm: "22ch" }}>{`Ταξινόμηση: ${
+					islowToHighPriceSorting ? "Φθίνουσα" : "Αύξουσα"
+				} Τιμή`}</Button>
 
 				<NavigationButtons
 					currentPageNo={currentPageNo}
