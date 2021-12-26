@@ -1,25 +1,7 @@
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import {
-	chakra,
-	Flex,
-	HStack,
-	Icon,
-	IconButton,
-	Link,
-	useColorMode,
-	useColorModeValue,
-	useDisclosure,
-	CloseButton,
-	Box,
-	VStack,
-	Button,
-} from "@chakra-ui/react";
-import { useViewportScroll } from "framer-motion";
-// import { FaMoon, FaSun, FaHeart } from "react-icons/fa";
-// import { AiFillGithub, AiOutlineMenu, AiFillHome, AiOutlineInbox } from "react-icons/ai";
-// import { BsFillCameraVideoFill } from "react-icons/bs";
-// import { Logo } from "@choc-ui/logo";
+import { Flex, Link } from "@chakra-ui/react";
+
 import BestPriceLogo from "./Logo/BestPriceLogo";
 
 function Navbar() {
