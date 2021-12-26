@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Box, Image, Flex, VStack, Heading } from "@chakra-ui/react";
+import Navbar from "./Navbar";
 
 function Home() {
 	const [categories, setCategories] = useState([]);
@@ -20,10 +21,9 @@ function Home() {
 	}, []);
 
 	return (
-		<div>
-			<Heading as="h1" fontSize="xl">
-				Home
-			</Heading>
+		<>
+			<Navbar />
+			
 			<VStack spacing={8} align="stretch">
 				{categories.map((category) => (
 					<div key={category.id}>
@@ -56,7 +56,7 @@ function Home() {
 					</div>
 				))}
 			</VStack>
-		</div>
+		</>
 	);
 }
 

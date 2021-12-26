@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import NavigationButtons from "./NavigationButtons";
 import { addFloatingPoint } from "../helperFunctions/helperFunctions";
+import Navbar from "./Navbar";
 
 function ProductsList() {
 	const location = useLocation();
@@ -64,8 +65,8 @@ function ProductsList() {
 			);
 	}, [API]);
 
-	// setting max value of price range based on most expensive product in current category	
-	useEffect(() => {	
+	// setting max value of price range based on most expensive product in current category
+	useEffect(() => {
 		setOriginMaxPrice(addFloatingPoint(productsMaxPrice));
 		setOriginMinPrice(addFloatingPoint(productsMinPrice));
 	}, [originMaxPrice, productsMaxPrice, productsMinPrice, wholeProductsList]);
@@ -124,8 +125,14 @@ function ProductsList() {
 		} else {
 			setIsLastItemSameAsLastItemInWholeList(false);
 		}
-
-	}, [isCurrentPageTheLastPage, isLastItemSameAsLastItemInWholeList, isfirstItemInCurrentPage, productsList, setIsfirstItemInCurrentPage, wholeProductsList]);
+	}, [
+		isCurrentPageTheLastPage,
+		isLastItemSameAsLastItemInWholeList,
+		isfirstItemInCurrentPage,
+		productsList,
+		setIsfirstItemInCurrentPage,
+		wholeProductsList,
+	]);
 
 	// trying to disable prev and next buttons in certain cases
 	// useEffect(() => {
@@ -134,7 +141,7 @@ function ProductsList() {
 	// 		setIsNextBtnDisabled(true);
 	// 		// setIsLastItemSameAsLastItemInWholeList(true);
 	// 		// console.log("isLastItemSameAsLastItemInWholeList", isLastItemSameAsLastItemInWholeList);
-	// 	} 
+	// 	}
 	// 	// else {
 	// 	// 	setIsNextBtnDisabled(false);
 	// 	// }
@@ -184,60 +191,58 @@ function ProductsList() {
 	}
 
 	return (
-		<VStack spacing={4} align="stretch">
-			<nav>
-				<Link as={RouterLink} to="/">
-					Home
-				</Link>
-			</nav>
+		<>
+			<Navbar />
+			
+			<VStack spacing={4} align="stretch">
+				<Box>
+					<Heading as="h3" fontSize="lg" fontWeight="600" margin="0.5em 0">
+						Εύρος Τιμών:{" "}
+						{hasUserSelectedPrice
+							? `€${priceRange[0]} - €${priceRange[1]}`
+							: `€${originMinPrice} - €${originMaxPrice}`}
+					</Heading>
+					<RangeSlider
+						name="price range"
+						aria-label={["min", "max"]}
+						colorScheme="red"
+						min={0}
+						max={originMaxPrice}
+						defaultValue={[0, 500]}
+						minStepsBetweenThumbs={10}
+						onChangeEnd={priceSelection}
+					>
+						<RangeSliderTrack>
+							<RangeSliderFilledTrack />
+						</RangeSliderTrack>
+						<RangeSliderThumb index={0} />
+						<RangeSliderThumb index={1} />
+					</RangeSlider>
+				</Box>
 
-			<Box>
-				<Heading as="h3" fontSize="lg" fontWeight="600" margin="0.5em 0">
-					Εύρος Τιμών:{" "}
-					{hasUserSelectedPrice
-						? `€${priceRange[0]} - €${priceRange[1]}`
-						: `€${originMinPrice} - €${originMaxPrice}`}
-				</Heading>
-				<RangeSlider
-					name="price range"
-					aria-label={["min", "max"]}
-					colorScheme="red"
-					min={0}
-					max={originMaxPrice}
-					defaultValue={[0, 500]}
-					minStepsBetweenThumbs={10}
-					onChangeEnd={priceSelection}
-				>
-					<RangeSliderTrack>
-						<RangeSliderFilledTrack />
-					</RangeSliderTrack>
-					<RangeSliderThumb index={0} />
-					<RangeSliderThumb index={1} />
-				</RangeSlider>
-			</Box>
+				<Button onClick={sortByPrice}>{`Sorting by ${
+					islowToHighPriceSorting ? "Low" : "High"
+				} Price`}</Button>
 
-			<Button onClick={sortByPrice}>{`Sorting by ${
-				islowToHighPriceSorting ? "Low" : "High"
-			} Price`}</Button>
-
-			<NavigationButtons
-				currentPageNo={currentPageNo}
-				prevBtnFunction={renderPreviousPage}
-				nextBtnFunction={renderNextPage}
-				isCurrentPageTheLastPage={isCurrentPageTheLastPage}
-			/>
-			<div>
-				{productsList.map((product) => (
-					<ProductsListItem key={product.id} item={product} />
-				))}
-			</div>
-			<NavigationButtons
-				currentPageNo={currentPageNo}
-				prevBtnFunction={renderPreviousPage}
-				nextBtnFunction={renderNextPage}
-				isCurrentPageTheLastPage={isCurrentPageTheLastPage}
-			/>
-		</VStack>
+				<NavigationButtons
+					currentPageNo={currentPageNo}
+					prevBtnFunction={renderPreviousPage}
+					nextBtnFunction={renderNextPage}
+					isCurrentPageTheLastPage={isCurrentPageTheLastPage}
+				/>
+				<div>
+					{productsList.map((product) => (
+						<ProductsListItem key={product.id} item={product} />
+					))}
+				</div>
+				<NavigationButtons
+					currentPageNo={currentPageNo}
+					prevBtnFunction={renderPreviousPage}
+					nextBtnFunction={renderNextPage}
+					isCurrentPageTheLastPage={isCurrentPageTheLastPage}
+				/>
+			</VStack>
+		</>
 	);
 }
 

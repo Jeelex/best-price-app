@@ -4,7 +4,6 @@ import { Flex, VStack, Heading, Text, Link, Image } from "@chakra-ui/react";
 import { addDescription, addFloatingPoint } from "../helperFunctions/helperFunctions";
 import Navbar from "./Navbar";
 
-
 function Product() {
 	const [product, setProduct] = useState({});
 	const location = useLocation();
@@ -26,16 +25,11 @@ function Product() {
 			);
 	}, [from]);
 
-	console.log(product)
+	console.log(product);
 
 	return (
-		<div>
+		<>
 			<Navbar />
-			<nav>
-				<Link as={RouterLink} to="/">
-					Home
-				</Link>
-			</nav>
 			<VStack spacing={4} align="stretch">
 				<Flex justifyContent="center" alignItems="center">
 					<Image
@@ -59,7 +53,7 @@ function Product() {
 					dangerouslySetInnerHTML={addDescription(product)}
 				></Text>
 			</VStack>
-		</div>
+		</>
 	);
 }
 
