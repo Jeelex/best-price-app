@@ -37,7 +37,12 @@ function ProductsList() {
 	const [isLastItemSameAsLastItemInWholeList, setIsLastItemSameAsLastItemInWholeList] =
 		useState(false);
 	const [islowToHighPriceSorting, setIsLowToHighPriceSorting] = useState(true);
-	const [isNextBtnDisabled, setIsNextBtnDisabled] = useState(false);
+	const productsMinPrice = wholeProductsList.length > 0 && wholeProductsList[0].price;
+	const productsMaxPrice =
+		wholeProductsList.length > 0 && wholeProductsList[wholeProductsList.length - 1].price;
+	const [originMinPrice, setOriginMinPrice] = useState(productsMinPrice);
+	const [originMaxPrice, setOriginMaxPrice] = useState(productsMaxPrice);
+	const [hasUserSelectedPrice, setHasUserSelectedPrice] = useState(false);
 
 	const API = `http://bp-interview.herokuapp.com/categories/${from}/products`;
 
@@ -59,27 +64,13 @@ function ProductsList() {
 			);
 	}, [API]);
 
-	// setting max value of price range based on most expensive product in current category
-	const productsMinPrice = wholeProductsList.length > 0 && wholeProductsList[0].price;
-	const productsMaxPrice =
-		wholeProductsList.length > 0 && wholeProductsList[wholeProductsList.length - 1].price;
-	const [originMinPrice, setOriginMinPrice] = useState(productsMinPrice);
-	const [originMaxPrice, setOriginMaxPrice] = useState(productsMaxPrice);
-	const [hasUserSelectedPrice, setHasUserSelectedPrice] = useState(false);
-
-	// const [originMaxPriceHalf, setOriginMaxPriceHalf] = useState(originMaxPrice / 2);
-	// const maxPrice = addFloatingPoint(productsMaxPrice)
-	// console.log("maxPrice", maxPrice / 2)
-	// let maxPriceHalf = maxPrice / 2
-	useEffect(() => {
-		// maxPriceHalf = maxPrice / 2
+	// setting max value of price range based on most expensive product in current category	
+	useEffect(() => {	
 		setOriginMaxPrice(addFloatingPoint(productsMaxPrice));
 		setOriginMinPrice(addFloatingPoint(productsMinPrice));
-		// setOriginMaxPriceHalf(productsMaxPrice / 2)
-		// setOriginMaxPriceHalf(addFloatingPoint(productsMaxPrice / 2))
 	}, [originMaxPrice, productsMaxPrice, productsMinPrice, wholeProductsList]);
 
-	// data fetching based on price range and/or currentPageNo
+	// data fetching based on user selected price range and/or currentPageNo
 	useEffect(() => {
 		fetch(selectedParamsAPI)
 			.then((data) => data.json())
@@ -112,9 +103,9 @@ function ProductsList() {
 	}, [currentPageNo, isCurrentPageTheLastPage, maxPageNumber, productsList]);
 
 	// checking if last item in currentPage is first OR last item in wholeProductsList
-	const lastItemIdInCurrentPage =
-		productsList.length > 0 && productsList[productsList.length - 1].id;
 	useEffect(() => {
+		const lastItemIdInCurrentPage =
+			productsList.length > 0 && productsList[productsList.length - 1].id;
 		const firstItemIdInWholeList = wholeProductsList.length > 0 && wholeProductsList[0].id;
 
 		const lastItemIdInWholeList =
@@ -122,25 +113,19 @@ function ProductsList() {
 
 		if (lastItemIdInCurrentPage === firstItemIdInWholeList) {
 			setIsfirstItemInCurrentPage(true);
-			console.log("isfirstItemInCurrentPage", isfirstItemInCurrentPage);
+			// console.log("isfirstItemInCurrentPage", isfirstItemInCurrentPage);
 		} else {
 			setIsfirstItemInCurrentPage(false);
 		}
 
 		if (lastItemIdInCurrentPage === lastItemIdInWholeList) {
 			setIsLastItemSameAsLastItemInWholeList(true);
-			console.log("isLastItemSameAsLastItemInWholeList", isLastItemSameAsLastItemInWholeList);
+			// console.log("isLastItemSameAsLastItemInWholeList", isLastItemSameAsLastItemInWholeList);
 		} else {
 			setIsLastItemSameAsLastItemInWholeList(false);
 		}
 
-		if (lastItemIdInCurrentPage && isCurrentPageTheLastPage) {
-			console.log("last item is here in last page");
-			setIsNextBtnDisabled(true);
-			// setIsLastItemSameAsLastItemInWholeList(true);
-			// console.log("isLastItemSameAsLastItemInWholeList", isLastItemSameAsLastItemInWholeList);
-		}
-	}, [isCurrentPageTheLastPage, isLastItemSameAsLastItemInWholeList, isfirstItemInCurrentPage, lastItemIdInCurrentPage, productsList, setIsfirstItemInCurrentPage, wholeProductsList]);
+	}, [isCurrentPageTheLastPage, isLastItemSameAsLastItemInWholeList, isfirstItemInCurrentPage, productsList, setIsfirstItemInCurrentPage, wholeProductsList]);
 
 	// trying to disable prev and next buttons in certain cases
 	// useEffect(() => {
@@ -157,7 +142,6 @@ function ProductsList() {
 
 	function renderPreviousPage() {
 		if (currentPageNo === 1) {
-			console.log("it's the first page");
 			return;
 		}
 
@@ -170,7 +154,6 @@ function ProductsList() {
 			return;
 		}
 		if (isCurrentPageTheLastPage) {
-			// console.log("next btn should be disabled");
 			return;
 		}
 		setCurrentPageNo(currentPageNo + 1);
@@ -222,8 +205,6 @@ function ProductsList() {
 					min={0}
 					max={originMaxPrice}
 					defaultValue={[0, 500]}
-					// defaultValue={[0, originMaxPriceHalf]}
-					// defaultValue={[0, maxPriceHalf]}
 					minStepsBetweenThumbs={10}
 					onChangeEnd={priceSelection}
 				>
