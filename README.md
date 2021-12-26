@@ -12,4 +12,4 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 <br>
 
 ## Check it out here: 
-https://best-price-clone-app.netlify.app/
+https://best-price-clone.netlify.app/
