@@ -23,6 +23,7 @@ import NavigationButtons from "./NavigationButtons";
 function ProductsList() {
 	const location = useLocation();
 	const { from } = location.state;
+	const [wholeProductsList, setWholeProductsList] = useState([]);
 	const [productsList, setProductsList] = useState([]);
 	const [currentPageNo, setCurrentPageNo] = useState(1);
 	const [totalNumberOfProducts, setTotalNumberOfProducts] = useState(0);
@@ -36,7 +37,13 @@ function ProductsList() {
 	const [userMaxPrice, setUserMaxPrice] = useState(28000);
 	const [priceFilters, setPriceFilters] = useState("");
 	const [selectedPriceParams, setSelectedPriceParams] = useState("");
-	const [areAllProductsDisplayed, setAreAllProductsDisplayed] = useState(false);
+	const [isCurrentPageTheLastPage, setIsCurrentPageTheLastPage] =
+		useState(false);
+
+	const [
+		isLastItemSameAsLastItemInWholeList,
+		setIsLastItemSameAsLastItemInWholeList,
+	] = useState(false);
 
 	const [islowToHighPriceSorting, setIsLowToHighPriceSorting] = useState(false);
 
@@ -61,6 +68,7 @@ function ProductsList() {
 			.then((firstResponse) => firstResponse.json())
 			.then(
 				(allData) => {
+					setWholeProductsList(allData);
 					setTotalNumberOfProducts(allData.length);
 				},
 				(error) => {
@@ -107,16 +115,16 @@ function ProductsList() {
 
 	//TODO trying to check if currentPageNo is the last in order to disable next button
 	useEffect(() => {
-		if (productsList.length < 15) {
+		if (productsList.length < 15 || currentPageNo === maxPageNumber) {
 			// console.log("less than 15!");
 			// console.log(productsList);
 			// setAreAllProductsDisplayed(!areAllProductsDisplayed);
-			setAreAllProductsDisplayed(true);
+			setIsCurrentPageTheLastPage(true);
 		} else {
-			setAreAllProductsDisplayed(false);
+			setIsCurrentPageTheLastPage(false);
 		}
-	}, [areAllProductsDisplayed, productsList]);
-	console.log(areAllProductsDisplayed);
+	}, [currentPageNo, isCurrentPageTheLastPage, maxPageNumber, productsList]);
+	console.log("isCurrentPageTheLastPage", isCurrentPageTheLastPage);
 
 	// useEffect(() => {
 	// 	getProductsList(specificPageAPI);
@@ -130,9 +138,9 @@ function ProductsList() {
 	// console.log("priceFilters", priceFilters);
 
 	function renderPreviousPage() {
-		if (areAllProductsDisplayed || currentPageNo === 1) {
+		if (isCurrentPageTheLastPage || currentPageNo === 1) {
 			console.log("previous btn should be disabled");
-			return;
+			// return;
 		}
 
 		if (currentPageNo >= 2) {
@@ -140,15 +148,39 @@ function ProductsList() {
 		}
 		console.log("pageNo", currentPageNo);
 	}
+
+	// checking if last item in currentPage is last item in wholeProductsList
+	useEffect(() => {
+		const lastItemIdInCurrentPage =
+			productsList.length > 0 && productsList[productsList.length - 1].id;
+		const lastItemIdInWholeList =
+			wholeProductsList.length > 0 &&
+			wholeProductsList[wholeProductsList.length - 1].id;
+		// console.log("last item currentPage", lastItemIdInCurrentPage);
+		// console.log("last item Whole List", lastItemIdInWholeList);
+		if (lastItemIdInCurrentPage === lastItemIdInWholeList) {
+			console.log("same product!");
+			setIsLastItemSameAsLastItemInWholeList(true);
+		} else {
+			setIsLastItemSameAsLastItemInWholeList(false);
+		}
+		console.log(
+			"isLastItemSameAsLastItemInWholeList",
+			isLastItemSameAsLastItemInWholeList
+		);
+	});
+
 	function renderNextPage() {
-		if (areAllProductsDisplayed) {
-			console.log("next btn should be disabled");
+		if (isLastItemSameAsLastItemInWholeList && isCurrentPageTheLastPage) {
+			// console.log("next btn should be disabled");
 			return;
 		}
-
-		if (currentPageNo < maxPageNumber) {
-			setCurrentPageNo(currentPageNo + 1);
+		if (isCurrentPageTheLastPage) {
+			// console.log("next btn should be disabled");
+			return;
 		}
+		setCurrentPageNo(currentPageNo + 1);
+
 		console.log("pageNo", currentPageNo);
 	}
 
@@ -203,15 +235,19 @@ function ProductsList() {
 
 			<NavigationButtons
 				currentPageNo={currentPageNo}
-				prevBtnFunction={islowToHighPriceSorting ? renderNextPage : renderPreviousPage}
-				nextBtnFunction={islowToHighPriceSorting ? renderPreviousPage : renderNextPage}
+				prevBtnFunction={renderPreviousPage}
+				nextBtnFunction={renderNextPage}
+				// prevBtnFunction={islowToHighPriceSorting ? renderNextPage : renderPreviousPage}
+				// nextBtnFunction={islowToHighPriceSorting ? renderPreviousPage : renderNextPage}
 				maxPageNumber={maxPageNumber}
 				// prevBtnDisabled={areAllProductsDisplayed || currentPageNo === 1 ? true : false }
-				nextBtnDisabled={areAllProductsDisplayed ? true : false}
+				// nextBtnDisabled={isCurrentPageTheLastPage || isLastItemSameAsLastItemInWholeList ? true : false}
 			/>
 			<div>
 				{productsList
-					.sort((a, b) => (islowToHighPriceSorting ? b.price - a.price : a.price - b.price))
+					.sort((a, b) =>
+						islowToHighPriceSorting ? b.price - a.price : a.price - b.price
+					)
 					// .filter(
 					// 	(product) =>
 					// 		priceRange[0] <= addFloatingPoint(product.price) &&
@@ -227,7 +263,7 @@ function ProductsList() {
 				nextBtnFunction={renderNextPage}
 				maxPageNumber={maxPageNumber}
 				// prevBtnDisabled={areAllProductsDisplayed ? true : false }
-				nextBtnDisabled={areAllProductsDisplayed ? true : false}
+				nextBtnDisabled={isCurrentPageTheLastPage ? true : false}
 			/>
 		</VStack>
 	);

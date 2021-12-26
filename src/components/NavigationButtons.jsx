@@ -16,8 +16,8 @@ function NavigationButtons({prevBtnDisabled, nextBtnDisabled, currentPageNo, pre
 			<Button
 				colorScheme="red"
 				width="90px"
-				// style={{ opacity: currentPageNo < maxPageNumber ? 1 : 0.5 }}
-				style={{ opacity: nextBtnDisabled ? 0.5 : 1 }}
+				style={{ opacity: currentPageNo < maxPageNumber ? 1 : 0.5 }}
+				// style={{ opacity: nextBtnDisabled ? 0.5 : 1 }}
 				onClick={nextBtnFunction}
 			>
 				next
