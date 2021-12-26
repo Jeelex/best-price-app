@@ -108,15 +108,15 @@ function ProductsList() {
 	//TODO trying to check if currentPageNo is the last in order to disable next button
 	useEffect(() => {
 		if (productsList.length < 15) {
-			console.log(productsList)
 			console.log("less than 15!");
+			console.log(productsList);
 			// setAreAllProductsDisplayed(!areAllProductsDisplayed);
 			setAreAllProductsDisplayed(true);
-			console.log(areAllProductsDisplayed);
 		} else {
 			setAreAllProductsDisplayed(false);
 		}
-	}, [areAllProductsDisplayed, productsList])
+	}, [areAllProductsDisplayed, productsList]);
+	console.log(areAllProductsDisplayed);
 
 	// useEffect(() => {
 	// 	getProductsList(specificPageAPI);
@@ -129,12 +129,11 @@ function ProductsList() {
 	// console.log("specificPageAPI", specificPageAPI);
 	// console.log("priceFilters", priceFilters);
 
-	
-
-
-
 	function renderPreviousPage() {
-		//if
+		if (areAllProductsDisplayed || currentPageNo === 1) {
+			console.log("previous btn should be disabled");
+			return;
+		}
 
 		if (currentPageNo >= 2) {
 			setCurrentPageNo(currentPageNo - 1);
@@ -142,6 +141,11 @@ function ProductsList() {
 		console.log("pageNo", currentPageNo);
 	}
 	function renderNextPage() {
+		if (areAllProductsDisplayed) {
+			console.log("next btn should be disabled");
+			return;
+		}
+
 		if (currentPageNo < maxPageNumber) {
 			setCurrentPageNo(currentPageNo + 1);
 		}
@@ -202,6 +206,8 @@ function ProductsList() {
 				prevBtnFunction={renderPreviousPage}
 				nextBtnFunction={renderNextPage}
 				maxPageNumber={maxPageNumber}
+				prevBtnDisabled={areAllProductsDisplayed || currentPageNo === 1 ? true : false }
+				nextBtnDisabled={areAllProductsDisplayed ? true : false}
 			/>
 			<div>
 				{productsList
@@ -220,6 +226,8 @@ function ProductsList() {
 				prevBtnFunction={renderPreviousPage}
 				nextBtnFunction={renderNextPage}
 				maxPageNumber={maxPageNumber}
+				// prevBtnDisabled={areAllProductsDisplayed ? true : false }
+				nextBtnDisabled={areAllProductsDisplayed ? true : false}
 			/>
 		</VStack>
 	);
