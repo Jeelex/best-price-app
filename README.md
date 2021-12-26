@@ -8,3 +8,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - Javascript ES6+
 - React Router
 - Chakra UI
+
+<br>
+
+## Check it out here: 
+https://best-price-clone-app.netlify.app/
