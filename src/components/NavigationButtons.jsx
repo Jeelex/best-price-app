@@ -1,14 +1,13 @@
 import React from "react";
 import { Button, Flex } from "@chakra-ui/react";
 
-function NavigationButtons({prevBtnDisabled, nextBtnDisabled, currentPageNo, prevBtnFunction, nextBtnFunction, maxPageNumber}) {
+function NavigationButtons({currentPageNo, prevBtnFunction, nextBtnFunction, isCurrentPageTheLastPage}) {
 	return (
 		<Flex justifyContent="space-between">
 			<Button
 				colorScheme="red"
 				width="90px"
-				// style={{ opacity: currentPageNo >= 2 ? 1 : 0.5 }}
-				style={{ opacity: prevBtnDisabled ? 0.5 : 1 }}
+				style={{ opacity: currentPageNo === 1 ? 0.5 : 1 }}
 				onClick={prevBtnFunction}
 			>
 				previous
@@ -16,8 +15,7 @@ function NavigationButtons({prevBtnDisabled, nextBtnDisabled, currentPageNo, pre
 			<Button
 				colorScheme="red"
 				width="90px"
-				style={{ opacity: currentPageNo < maxPageNumber ? 1 : 0.5 }}
-				// style={{ opacity: nextBtnDisabled ? 0.5 : 1 }}
+				style={{ opacity: isCurrentPageTheLastPage ? 0.5 : 1 }}
 				onClick={nextBtnFunction}
 			>
 				next
