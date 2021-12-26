@@ -37,6 +37,7 @@ function ProductsList() {
 	const [userMaxPrice, setUserMaxPrice] = useState(28000);
 	const [priceFilters, setPriceFilters] = useState("");
 	const [selectedPriceParams, setSelectedPriceParams] = useState("");
+	const [selectedSortingParams, setSelectedSortingParams] = useState("");
 	const [isCurrentPageTheLastPage, setIsCurrentPageTheLastPage] =
 		useState(false);
 
@@ -45,7 +46,7 @@ function ProductsList() {
 		setIsLastItemSameAsLastItemInWholeList,
 	] = useState(false);
 
-	const [islowToHighPriceSorting, setIsLowToHighPriceSorting] = useState(false);
+	const [islowToHighPriceSorting, setIsLowToHighPriceSorting] = useState(true);
 
 	const API = `http://bp-interview.herokuapp.com/categories/${from}/products`;
 
@@ -55,7 +56,7 @@ function ProductsList() {
 	// let selectedPriceParams = `&min_price=${userMinPrice}&max_price=${userMaxPrice}&limit=3`;
 
 	let specificPageAPI =
-		API + `?page=${currentPageNo}&limit=15` + selectedPriceParams;
+		API + `?page=${currentPageNo}&limit=15` + selectedPriceParams + selectedSortingParams;
 
 	// let selectedPriceAPI = API + priceFilters;
 	// let selectedPriceAPI = API + `?min_price=${userMinPrice}&max_price=${userMaxPrice}&limit=${maxProductsPerPage}`;
@@ -174,13 +175,19 @@ function ProductsList() {
 
 	function sortByPrice() {
 		if (islowToHighPriceSorting) {
-			setCurrentPageNo(1);
+			// setCurrentPageNo(1);
+			setSelectedSortingParams("&sort=price&order=desc")
 		} else {
 			setCurrentPageNo(maxPageNumber);
+			setSelectedSortingParams("")
 		}
 		setIsLowToHighPriceSorting(!islowToHighPriceSorting);
+
+		setSelectedSortingParams("&sort=price&order=desc")
+
 	}
 	// console.log("islowToHigh", islowToHigh)
+	console.log("specificPageAPI", specificPageAPI)
 
 	function priceSelection(priceRange) {
 		setPriceRange(priceRange);
@@ -218,24 +225,20 @@ function ProductsList() {
 			</Box>
 
 			<Button onClick={sortByPrice}>{`Sorting by ${
-				islowToHighPriceSorting ? "High" : "Low"
+				islowToHighPriceSorting ? "Low":  "High"
 			} Price`}</Button>
 
 			<NavigationButtons
 				currentPageNo={currentPageNo}
 				prevBtnFunction={renderPreviousPage}
 				nextBtnFunction={renderNextPage}
-				// prevBtnFunction={islowToHighPriceSorting ? renderNextPage : renderPreviousPage}
-				// nextBtnFunction={islowToHighPriceSorting ? renderPreviousPage : renderNextPage}
 				maxPageNumber={maxPageNumber}
-				// prevBtnDisabled={areAllProductsDisplayed || currentPageNo === 1 ? true : false }
-				// nextBtnDisabled={isCurrentPageTheLastPage || isLastItemSameAsLastItemInWholeList ? true : false}
 			/>
 			<div>
 				{productsList
-					.sort((a, b) =>
-						islowToHighPriceSorting ? b.price - a.price : a.price - b.price
-					)
+					// .sort((a, b) =>
+					// 	islowToHighPriceSorting ? b.price - a.price : a.price - b.price
+					// )
 					// .filter(
 					// 	(product) =>
 					// 		priceRange[0] <= addFloatingPoint(product.price) &&
