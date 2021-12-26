@@ -11,13 +11,9 @@ import {
 } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
-import { addFloatingPoint } from "../helperFunctions/helperFunctions";
+import { addDescription, addFloatingPoint } from "../helperFunctions/helperFunctions";
 
 function ProductsListItem({ item }) {
-	function addDescription() {
-		return { __html: item.description };
-	}
-
 	return (
 		<>
 			<Link to={`/products/${item.id}`} state={{ from: item.id }}>
@@ -45,7 +41,7 @@ function ProductsListItem({ item }) {
 								textOverflow="ellipsis"
 								overflow="hidden"
 								maxHeight="3em"
-								dangerouslySetInnerHTML={addDescription()}
+								dangerouslySetInnerHTML={addDescription(item)}
 							></Text>
 
 							<HStack spacing={1} display="flex" alignItems="center" mt={2}>

@@ -48,3 +48,7 @@ export function addFloatingPoint(productPrice) {
 	const priceWithPeriod = parseFloat(arrayToString);
 	return priceWithPeriod;
 }
+
+export function addDescription(item) {
+	return { __html: item.description };
+} 

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
-import { Box, Button, Flex, VStack, Heading, Text, Link, Image } from "@chakra-ui/react";
+import { Flex, VStack, Heading, Text, Link, Image } from "@chakra-ui/react";
+import { addDescription } from "../helperFunctions/helperFunctions";
 
 function Product() {
 	const [product, setProduct] = useState({});
 	const location = useLocation();
 	const { from } = location.state;
 
-	
 	// first data fetch
 	useEffect(() => {
 		const API = `http://bp-interview.herokuapp.com/products/${from}`;
@@ -44,7 +44,15 @@ function Product() {
 				<Heading as="h2" size="sm" fontWeight="bold">
 					{product.title}
 				</Heading>
-				<p>{product.price}</p>
+				<p>{product.price}€</p>
+				<Text
+					mt={2}
+					fontSize="sm"
+					// textOverflow="ellipsis"
+					overflow="hidden"
+					maxHeight="8rem"
+					dangerouslySetInnerHTML={addDescription(product)}
+				></Text>
 			</VStack>
 		</div>
 	);
