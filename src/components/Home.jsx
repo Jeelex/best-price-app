@@ -13,7 +13,6 @@ function Home() {
 			.then(
 				(data) => {
 					setCategories(data);
-					console.log(data);
 				},
 				(error) => {
 					console.log(error);
