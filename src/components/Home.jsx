@@ -7,7 +7,7 @@ function Home() {
 	const [categories, setCategories] = useState([]);
 
 	useEffect(() => {
-		const API = "http://bp-interview.herokuapp.com/categories";
+		const API = "https://bp-interview.herokuapp.com/categories";
 		fetch(API)
 			.then((response) => response.json())
 			.then(

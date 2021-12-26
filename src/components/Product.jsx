@@ -11,7 +11,7 @@ function Product() {
 
 	// first data fetch
 	useEffect(() => {
-		const API = `http://bp-interview.herokuapp.com/products/${from}`;
+		const API = `https://bp-interview.herokuapp.com/products/${from}`;
 		fetch(API)
 			.then((response) => response.json())
 			.then(
