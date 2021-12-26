@@ -32,8 +32,8 @@ function ProductsList() {
 
 	// const [userPriceRange, setUserPriceRange] = useState([0, 2800]);
 	// const [originalData, setOriginalData] = useState([]);
-	const [userMinPrice, setUserMinPrice] = useState(null);
-	const [userMaxPrice, setUserMaxPrice] = useState(null);
+	const [userMinPrice, setUserMinPrice] = useState(0);
+	const [userMaxPrice, setUserMaxPrice] = useState(28000);
 	const [priceFilters, setPriceFilters] = useState("");
 	const [selectedPriceParams, setSelectedPriceParams] = useState("");
 
@@ -43,72 +43,106 @@ function ProductsList() {
 
 	// let specificPageAPI = API + `?page=${currentPageNo}&limit=${maxProductsPerPage}`;
 	// let specificPageAPI = API + `?page=${currentPageNo}&limit=3`;
-	
+
 	// let selectedPriceParams = `&min_price=${userMinPrice}&max_price=${userMaxPrice}&limit=3`;
 
-	let specificPageAPI = API + `?page=${currentPageNo}&limit=3` + selectedPriceParams;
+	let specificPageAPI =
+		API + `?page=${currentPageNo}&limit=15` + selectedPriceParams;
 
 	// let selectedPriceAPI = API + priceFilters;
 	// let selectedPriceAPI = API + `?min_price=${userMinPrice}&max_price=${userMaxPrice}&limit=${maxProductsPerPage}`;
-	
-	// let selectedPriceAPI = API + `?min_price=${userMinPrice}&max_price=${userMaxPrice}&limit=3`;
-	// first data fetch + fetching based on current page
-	useEffect(() => {
-		getProductsList(specificPageAPI);
-	}, []);
 
+	// let selectedPriceAPI = API + `?min_price=${userMinPrice}&max_price=${userMaxPrice}&limit=3`;
+
+	// first data fetch
 	useEffect(() => {
-		getProductsList(specificPageAPI);
-	}, [currentPageNo]);
+		fetch(API)
+			.then((firstResponse) => firstResponse.json())
+			.then(
+				(allData) => {
+					setTotalNumberOfProducts(allData.length);
+				},
+				(error) => {
+					console.log(error);
+				}
+			);
+	}, [API]);
+
+	// data fetching based on price range and currentPageNo
+	useEffect(() => {
+		fetch(specificPageAPI)
+			.then((data) => data.json())
+			.then(
+				(data) => {
+					setProductsList(data);
+				},
+				(error) => {
+					console.log(error);
+				}
+			);
+	}, [currentPageNo, priceRange, specificPageAPI]);
+
+	// data fetching based on current page
+	// useEffect(() => {
+	// 	// getProductsList(specificPageAPI);
+	// }, [currentPageNo]);
 
 	// fetching based on user selected price range
 	// useEffect(() => {
 	// 	getProductsList(selectedPriceAPI);
 	// }, [priceRange]);
 
+	// updating price range based on user selection
 	useEffect(() => {
 		// multiplying by 100 because prices are in cents
 		setUserMinPrice(priceRange[0] * 100);
 		setUserMaxPrice(priceRange[1] * 100);
-		setSelectedPriceParams(`&min_price=${userMinPrice}&max_price=${userMaxPrice}`);
+		setSelectedPriceParams(
+			`&min_price=${userMinPrice}&max_price=${userMaxPrice}`
+		);
 		// getProductsList(selectedPriceAPI);
-		getProductsList(specificPageAPI);
-	}, [priceRange]);
-	console.log("userMinPrice", userMinPrice)
-	console.log("userMaxPrice", userMaxPrice)
+		// getProductsList(specificPageAPI);
+	}, [priceRange, userMaxPrice, userMinPrice]);
+
+	// useEffect(() => {
+	// 	getProductsList(specificPageAPI);
+	// 	console.log("specificPageAPI", specificPageAPI);
+	// }, [selectedPriceParams])
+
+	console.log("userMinPrice", userMinPrice);
+	console.log("userMaxPrice", userMaxPrice);
 	// console.log("selectedPriceAPI", selectedPriceAPI);
-	console.log("specificPageAPI", specificPageAPI)
+	// console.log("specificPageAPI", specificPageAPI);
 	// console.log("priceFilters", priceFilters);
-	
 
-	async function getProductsList(ApiFilter) {
-		// how to add pagination later:
-		// const API = `http://bp-interview.herokuapp.com/categories/${from}/products?page=1&limit=2`;
-		// const API = `http://bp-interview.herokuapp.com/categories/${from}/products?page=${pageNo}&limit=2`;
+	// async function getProductsList(ApiFilter) {
+	// 	// how to add pagination later:
+	// 	// const API = `http://bp-interview.herokuapp.com/categories/${from}/products?page=1&limit=2`;
+	// 	// const API = `http://bp-interview.herokuapp.com/categories/${from}/products?page=${pageNo}&limit=2`;
 
-		try {
-			const firstResponse = await fetch(API);
-			const allData = await firstResponse.json();
-			setTotalNumberOfProducts(allData.length);
-			// setOriginalData(allData);
-			// console.log(allData)
-			// const productsMinPrice = allData[0].price;
-			// const productsMaxPrice = allData[allData.length - 1].price;
-			// console.log("productsMinPrice", productsMinPrice)
-			// console.log("productsMaxPrice", productsMaxPrice)
-			// setUserPriceRange(productsMaxPrice);
+	// 	try {
+	// 		const firstResponse = await fetch(API);
+	// 		const allData = await firstResponse.json();
+	// 		setTotalNumberOfProducts(allData.length);
+	// 		// setOriginalData(allData);
+	// 		// console.log(allData)
+	// 		// const productsMinPrice = allData[0].price;
+	// 		// const productsMaxPrice = allData[allData.length - 1].price;
+	// 		// console.log("productsMinPrice", productsMinPrice)
+	// 		// console.log("productsMaxPrice", productsMaxPrice)
+	// 		// setUserPriceRange(productsMaxPrice);
 
-			const response = await fetch(ApiFilter);
-			const data = await response.json();
-			console.log(data);
-			setProductsList(data);
-		} catch (error) {
-			console.log(error);
-			// setErrorMessage("Something went wrong. Please try again!");
-		}
-		// console.log("data initial", originalData);
-	}
-	// console.log("priceRange", priceRange);
+	// 		const response = await fetch(ApiFilter);
+	// 		const data = await response.json();
+	// 		console.log(data);
+	// 		setProductsList(data);
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 		// setErrorMessage("Something went wrong. Please try again!");
+	// 	}
+	// 	// console.log("data initial", originalData);
+	// }
+	// // console.log("priceRange", priceRange);
 
 	function renderPreviousPage() {
 		if (currentPageNo >= 2) {
