@@ -17,7 +17,6 @@ function ProductsListItem({ item }) {
 	return (
 		<>
 			<Link to={`/products/${item.slug_path}`} state={{ from: item.id }}>
-			{/* <Link to={`/products/${item.id}/${item.slug_path}`} state={{ from: item.id }}> */}
 				<Flex w="full" alignItems="center" justifyContent="center">
 					<Flex w="100%" mx="auto" shadow="lg" rounded="lg" overflow="hidden">
 						<Flex w={1 / 3} align="center" justify="center">
