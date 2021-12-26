@@ -1,40 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
-import {
-	Box,
-	Button,
-	Flex,
-	VStack,
-	Heading,
-	Text,
-	Link,
-	Image,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, VStack, Heading, Text, Link, Image } from "@chakra-ui/react";
 
 function Product() {
 	const [product, setProduct] = useState({});
 	const location = useLocation();
 	const { from } = location.state;
 
-	async function getProduct() {
-		console.log("product id", from);
-		const API = `http://bp-interview.herokuapp.com/products/${from}`;
+	const API = `http://bp-interview.herokuapp.com/products/${from}`;
 
-		try {
-			const response = await fetch(API);
-			const data = await response.json();
-			// console.log(data);
-			setProduct(data);
-		} catch (error) {
-			console.log(error);
-			// setErrorMessage("Something went wrong. Please try again!");
-		}
-	}
-
+	// first data fetch
 	useEffect(() => {
-		getProduct();
-		// setProductsList(getProductsList);
-	}, []);
+		fetch(API)
+			.then((response) => response.json())
+			.then(
+				(data) => {
+					setProduct(data);
+					console.log("product id", from);
+				},
+				(error) => {
+					console.log(error);
+				}
+			);
+	}, [API, from]);
 
 	return (
 		<div>
@@ -56,7 +44,6 @@ function Product() {
 				<Heading as="h2" size="sm" fontWeight="bold">
 					{product.title}
 				</Heading>
-				<h3>{product.title}</h3>
 				<p>{product.price}</p>
 			</VStack>
 		</div>
