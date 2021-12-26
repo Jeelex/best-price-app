@@ -15,11 +15,13 @@ import {
 	Link,
 } from "@chakra-ui/react";
 import NavigationButtons from "./NavigationButtons";
+import { addFloatingPoint } from "../helperFunctions/helperFunctions";
 
 function ProductsList() {
 	const location = useLocation();
 	const { from } = location.state;
 	const [wholeProductsList, setWholeProductsList] = useState([]);
+	// console.log(wholeProductsList[wholeProductsList.length-1].price)
 	const [productsList, setProductsList] = useState([]);
 	const [currentPageNo, setCurrentPageNo] = useState(1);
 	const [totalNumberOfProducts, setTotalNumberOfProducts] = useState(0);
@@ -55,6 +57,26 @@ function ProductsList() {
 				}
 			);
 	}, [API]);
+
+	// setting max value of price range based on most expensive product in current category
+	const productsMinPrice = wholeProductsList.length > 0 && wholeProductsList[0].price;
+	const productsMaxPrice =
+		wholeProductsList.length > 0 && wholeProductsList[wholeProductsList.length - 1].price;
+	const [originMinPrice, setOriginMinPrice] = useState(productsMinPrice);
+	const [originMaxPrice, setOriginMaxPrice] = useState(productsMaxPrice);
+	const [hasUserSelectedPrice, setHasUserSelectedPrice] = useState(false);
+
+	// const [originMaxPriceHalf, setOriginMaxPriceHalf] = useState(originMaxPrice / 2);
+	// const maxPrice = addFloatingPoint(productsMaxPrice)
+	// console.log("maxPrice", maxPrice / 2)
+	// let maxPriceHalf = maxPrice / 2
+	useEffect(() => {
+		// maxPriceHalf = maxPrice / 2
+		setOriginMaxPrice(addFloatingPoint(productsMaxPrice));
+		setOriginMinPrice(addFloatingPoint(productsMinPrice));
+		// setOriginMaxPriceHalf(productsMaxPrice / 2)
+		// setOriginMaxPriceHalf(addFloatingPoint(productsMaxPrice / 2))
+	}, [originMaxPrice, productsMaxPrice, wholeProductsList]);
 
 	// data fetching based on price range and/or currentPageNo
 	useEffect(() => {
@@ -151,6 +173,7 @@ function ProductsList() {
 	}
 
 	function priceSelection(priceRange) {
+		setHasUserSelectedPrice(true);
 		setPriceRange(priceRange);
 		setCurrentPageNo(1);
 	}
@@ -165,15 +188,18 @@ function ProductsList() {
 
 			<Box>
 				<Heading as="h3" fontSize="lg" fontWeight="600" margin="0.5em 0">
-					Εύρος Τιμών: {`€${priceRange[0]} - €${priceRange[1]}`}
+					Εύρος Τιμών: {hasUserSelectedPrice ? `€${priceRange[0]} - €${priceRange[1]}` : `€${originMinPrice} - €${originMaxPrice}`}
 				</Heading>
 				<RangeSlider
 					name="price range"
 					aria-label={["min", "max"]}
 					colorScheme="red"
 					min={0}
-					max={2800}
-					defaultValue={[0, 1000]}
+					// max={2800}
+					max={originMaxPrice}
+					defaultValue={[0, 500]}
+					// defaultValue={[0, originMaxPriceHalf]}
+					// defaultValue={[0, maxPriceHalf]}
 					minStepsBetweenThumbs={10}
 					onChangeEnd={priceSelection}
 				>
