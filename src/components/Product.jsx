@@ -25,8 +25,6 @@ function Product() {
 			);
 	}, [from]);
 
-	console.log(product);
-
 	return (
 		<>
 			<Navbar />
