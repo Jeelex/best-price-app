@@ -77,7 +77,7 @@ function ProductsList() {
 			);
 	}, [API]);
 
-	// data fetching based on price range and currentPageNo
+	// data fetching based on price range and/or currentPageNo
 	useEffect(() => {
 		fetch(specificPageAPI)
 			.then((data) => data.json())
@@ -90,16 +90,6 @@ function ProductsList() {
 				}
 			);
 	}, [currentPageNo, priceRange, specificPageAPI]);
-
-	// data fetching based on current page
-	// useEffect(() => {
-	// 	// getProductsList(specificPageAPI);
-	// }, [currentPageNo]);
-
-	// fetching based on user selected price range
-	// useEffect(() => {
-	// 	getProductsList(selectedPriceAPI);
-	// }, [priceRange]);
 
 	// updating price range based on user selection
 	useEffect(() => {
