@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link as RouterLink } from "react-router-dom";
 import ProductsListItem from "./ProductsListItem";
 import { useLocation } from "react-router-dom";
 import {

@@ -23,7 +23,7 @@ function Home() {
 	return (
 		<>
 			<Navbar />
-			
+
 			<VStack spacing={8} align="stretch">
 				{categories.map((category) => (
 					<div key={category.id}>
@@ -35,7 +35,7 @@ function Home() {
 								rounded="lg"
 								overflow="hidden"
 								justifyContent="center"
-								// alignItems="center"
+								alignItems="center"
 							>
 								<Box w={2 / 3} p={{ base: 4, md: 4 }}>
 									<Heading as="h2" size="sm" fontWeight="bold">
