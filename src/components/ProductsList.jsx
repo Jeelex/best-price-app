@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import ProductsListItem from "./ProductsListItem";
 import { useLocation } from "react-router-dom";
-// import PriceRangeSlider from "./PriceRangeSlider";
 import {
 	RangeSlider,
 	RangeSliderTrack,
@@ -12,7 +11,6 @@ import {
 	Button,
 	VStack,
 	Heading,
-	Link,
 } from "@chakra-ui/react";
 import NavigationButtons from "./NavigationButtons";
 import { addFloatingPoint } from "../helperFunctions/helperFunctions";
@@ -22,7 +20,6 @@ function ProductsList() {
 	const location = useLocation();
 	const { from } = location.state;
 	const [wholeProductsList, setWholeProductsList] = useState([]);
-	// console.log(wholeProductsList[wholeProductsList.length-1].price)
 	const [productsList, setProductsList] = useState([]);
 	const [currentPageNo, setCurrentPageNo] = useState(1);
 	const [totalNumberOfProducts, setTotalNumberOfProducts] = useState(0);
@@ -134,7 +131,7 @@ function ProductsList() {
 		wholeProductsList,
 	]);
 
-	// trying to disable prev and next buttons in certain cases
+	// TODO trying to disable prev and next buttons in certain cases
 	// useEffect(() => {
 	// 	if (lastItemIdInCurrentPage && isCurrentPageTheLastPage) {
 	// 		console.log("last item is here in last page");
@@ -193,7 +190,7 @@ function ProductsList() {
 	return (
 		<>
 			<Navbar />
-			
+
 			<VStack spacing={4} align="stretch">
 				<Box>
 					<Heading as="h3" fontSize="lg" fontWeight="600" margin="0.5em 0">
@@ -220,7 +217,7 @@ function ProductsList() {
 					</RangeSlider>
 				</Box>
 
-				<Button onClick={sortByPrice}>{`Sorting by ${
+				<Button onClick={sortByPrice} maxWidth="200px">{`Sorting by ${
 					islowToHighPriceSorting ? "Low" : "High"
 				} Price`}</Button>
 
