@@ -6,6 +6,7 @@ import Navbar from "./Navbar";
 function Home() {
 	const [categories, setCategories] = useState([]);
 
+	// first data fetch
 	useEffect(() => {
 		const API = "https://bp-interview.herokuapp.com/categories";
 		fetch(API)
