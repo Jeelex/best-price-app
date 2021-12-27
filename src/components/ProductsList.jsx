@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ProductsListItem from "./ProductsListItem";
-import { useLocation } from "react-router-dom";
+import { useSearchParams, useParams } from "react-router-dom";
 import {
 	RangeSlider,
 	RangeSliderTrack,
@@ -16,9 +16,15 @@ import { addFloatingPoint } from "../helperFunctions/helperFunctions";
 import Navbar from "./Navbar";
 
 function ProductsList() {
-	const location = useLocation();
-	const { from } = location.state;
+	const [searchParams, setSearchParams] = useSearchParams();
+	const { id } = useParams();
+
 	const [wholeProductsList, setWholeProductsList] = useState([]);
+	const productsMinPrice = wholeProductsList.length > 0 && wholeProductsList[0].price;
+	const productsMaxPrice =
+		wholeProductsList.length > 0 && wholeProductsList[wholeProductsList.length - 1].price;
+	const [originMinPrice, setOriginMinPrice] = useState(productsMinPrice);
+	const [originMaxPrice, setOriginMaxPrice] = useState(productsMaxPrice);
 	const [productsList, setProductsList] = useState([]);
 	const [currentPageNo, setCurrentPageNo] = useState(1);
 	const [totalNumberOfProducts, setTotalNumberOfProducts] = useState(0);
@@ -34,14 +40,9 @@ function ProductsList() {
 	const [isLastItemSameAsLastItemInWholeList, setIsLastItemSameAsLastItemInWholeList] =
 		useState(false);
 	const [islowToHighPriceSorting, setIsLowToHighPriceSorting] = useState(true);
-	const productsMinPrice = wholeProductsList.length > 0 && wholeProductsList[0].price;
-	const productsMaxPrice =
-		wholeProductsList.length > 0 && wholeProductsList[wholeProductsList.length - 1].price;
-	const [originMinPrice, setOriginMinPrice] = useState(productsMinPrice);
-	const [originMaxPrice, setOriginMaxPrice] = useState(productsMaxPrice);
 	const [hasUserSelectedPrice, setHasUserSelectedPrice] = useState(false);
 
-	const API = `https://bp-interview.herokuapp.com/categories/${from}/products`;
+	const API = `https://bp-interview.herokuapp.com/categories/${id}/products`;
 
 	let selectedParamsAPI =
 		API + `?page=${currentPageNo}&limit=15` + selectedPriceParams + selectedSortingParams;
@@ -74,12 +75,22 @@ function ProductsList() {
 			.then(
 				(data) => {
 					setProductsList(data);
+					setSearchParams(
+						`page=${currentPageNo}&limit=15` + selectedPriceParams + selectedSortingParams
+					);
 				},
 				(error) => {
 					console.log(error);
 				}
 			);
-	}, [currentPageNo, priceRange, selectedParamsAPI]);
+	}, [
+		currentPageNo,
+		searchParams,
+		selectedParamsAPI,
+		selectedPriceParams,
+		selectedSortingParams,
+		setSearchParams,
+	]);
 
 	// updating price range based on user selection
 	useEffect(() => {
@@ -172,7 +183,7 @@ function ProductsList() {
 		if (islowToHighPriceSorting) {
 			setSelectedSortingParams("&sort=price&order=desc");
 		} else {
-			setSelectedSortingParams("");
+			setSelectedSortingParams("&sort=price&order=asc");
 		}
 		setIsLowToHighPriceSorting(!islowToHighPriceSorting);
 	}
