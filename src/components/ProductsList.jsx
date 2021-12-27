@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ProductsListItem from "./ProductsListItem";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import {
 	RangeSlider,
 	RangeSliderTrack,
