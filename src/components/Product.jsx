@@ -6,6 +6,8 @@ import Navbar from "./Navbar";
 
 function Product() {
 	const [product, setProduct] = useState({});
+	
+	// React Router hooks
 	const location = useLocation();
 	const { from } = location.state;
 
