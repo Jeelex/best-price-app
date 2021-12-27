@@ -16,34 +16,43 @@ import { addFloatingPoint } from "../helperFunctions/helperFunctions";
 import Navbar from "./Navbar";
 
 function ProductsList() {
+	// React Router hooks
 	const [searchParams, setSearchParams] = useSearchParams();
 	const { id } = useParams();
-
+	
+	// Fetched Product lists + currentPageNo
 	const [wholeProductsList, setWholeProductsList] = useState([]);
+	const [productsList, setProductsList] = useState([]);
+	const [currentPageNo, setCurrentPageNo] = useState(1);
+	
+	// Number of Products
+	const [totalNumberOfProducts, setTotalNumberOfProducts] = useState(0);
+	const maxProductsPerPage = 15;
+	const maxPageNumber = Math.ceil(totalNumberOfProducts / maxProductsPerPage);
+	
+	// Prices
 	const productsMinPrice = wholeProductsList.length > 0 && wholeProductsList[0].price;
 	const productsMaxPrice =
 		wholeProductsList.length > 0 && wholeProductsList[wholeProductsList.length - 1].price;
 	const [originMinPrice, setOriginMinPrice] = useState(productsMinPrice);
 	const [originMaxPrice, setOriginMaxPrice] = useState(productsMaxPrice);
-	const [productsList, setProductsList] = useState([]);
-	const [currentPageNo, setCurrentPageNo] = useState(1);
-	const [totalNumberOfProducts, setTotalNumberOfProducts] = useState(0);
-	const maxProductsPerPage = 15;
-	const maxPageNumber = Math.ceil(totalNumberOfProducts / maxProductsPerPage);
 	const [priceRange, setPriceRange] = useState([0, 2800]);
 	const [userMinPrice, setUserMinPrice] = useState(0);
 	const [userMaxPrice, setUserMaxPrice] = useState(28000);
 	const [selectedPriceParams, setSelectedPriceParams] = useState("");
+	const [hasUserSelectedPrice, setHasUserSelectedPrice] = useState(false);
+
+	// Sorting by ascending or descending price
 	const [selectedSortingParams, setSelectedSortingParams] = useState("&sort=price&order=asc");
+	const [islowToHighPriceSorting, setIsLowToHighPriceSorting] = useState(true);
+
+	// Button Logic - when to disable Next and/or Previous button
 	const [isCurrentPageTheLastPage, setIsCurrentPageTheLastPage] = useState(false);
 	const [isfirstItemInCurrentPage, setIsfirstItemInCurrentPage] = useState(false);
 	const [isLastItemSameAsLastItemInWholeList, setIsLastItemSameAsLastItemInWholeList] =
 		useState(false);
-	const [islowToHighPriceSorting, setIsLowToHighPriceSorting] = useState(true);
-	const [hasUserSelectedPrice, setHasUserSelectedPrice] = useState(false);
 
 	const API = `https://bp-interview.herokuapp.com/categories/${id}/products`;
-
 	let selectedParamsAPI =
 		API + `?page=${currentPageNo}&limit=15` + selectedPriceParams + selectedSortingParams;
 
@@ -141,26 +150,28 @@ function ProductsList() {
 	]);
 
 	// TODO trying to disable prev and next buttons in certain cases
-	// useEffect(() => {
-	// 	if (lastItemIdInCurrentPage && isCurrentPageTheLastPage) {
-	// 		console.log("last item is here in last page");
-	// 		setIsNextBtnDisabled(true);
+	// // useEffect(() => {
+	// // 	if (lastItemIdInCurrentPage && isCurrentPageTheLastPage) {
+	// // 		console.log("last item is here in last page");
+	// // 		setIsNextBtnDisabled(true);
 	// 		// setIsLastItemSameAsLastItemInWholeList(true);
 	// 		// console.log("isLastItemSameAsLastItemInWholeList", isLastItemSameAsLastItemInWholeList);
-	// 	}
+	// //	}
 	// 	// else {
 	// 	// 	setIsNextBtnDisabled(false);
 	// 	// }
-	// }, [isCurrentPageTheLastPage, lastItemIdInCurrentPage])
+	// // }, [isCurrentPageTheLastPage, lastItemIdInCurrentPage])
 
+	// Previous Button onClick Funcion
 	function renderPreviousPage() {
 		if (currentPageNo === 1) {
 			return;
 		}
-
+		
 		setCurrentPageNo(currentPageNo - 1);
 	}
-
+	
+	// Next Button onClick Funcion
 	function renderNextPage() {
 		if (isLastItemSameAsLastItemInWholeList && isCurrentPageTheLastPage) {
 			return;
@@ -171,6 +182,7 @@ function ProductsList() {
 		setCurrentPageNo(currentPageNo + 1);
 	}
 
+	// Ταξινόμηση (Sorting by) Button onClick Funcion
 	function sortByPrice() {
 		if (islowToHighPriceSorting && isCurrentPageTheLastPage) {
 			setCurrentPageNo(1);
@@ -188,6 +200,7 @@ function ProductsList() {
 		setIsLowToHighPriceSorting(!islowToHighPriceSorting);
 	}
 
+	// Price Range Slider input Function
 	function priceSelection(priceRange) {
 		setHasUserSelectedPrice(true);
 		setPriceRange(priceRange);
