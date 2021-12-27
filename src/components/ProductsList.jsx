@@ -34,7 +34,7 @@ function ProductsList() {
 	const [userMinPrice, setUserMinPrice] = useState(0);
 	const [userMaxPrice, setUserMaxPrice] = useState(28000);
 	const [selectedPriceParams, setSelectedPriceParams] = useState("");
-	const [selectedSortingParams, setSelectedSortingParams] = useState("");
+	const [selectedSortingParams, setSelectedSortingParams] = useState("&sort=price&order=asc");
 	const [isCurrentPageTheLastPage, setIsCurrentPageTheLastPage] = useState(false);
 	const [isfirstItemInCurrentPage, setIsfirstItemInCurrentPage] = useState(false);
 	const [isLastItemSameAsLastItemInWholeList, setIsLastItemSameAsLastItemInWholeList] =
